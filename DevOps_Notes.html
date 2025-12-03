@@ -606,7 +606,451 @@ systemctl daemon-reload
 systemctl start myapp
 systemctl enable myapp
                 </div>
-            </section>
+            
+                <!-- Added on 2025-12-03 13:25 -->
+<h3>Basic Git Commands (For managing repositories)</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><code>git init</code></td><td>Initializes a new Git repository in the current directory.</td></tr>
+    <tr><td><code>git clone &lt;repo_url&gt;</code></td><td>Clones a repository from a remote URL to your local machine.</td></tr>
+    <tr><td><code>git status</code></td><td>Shows the working directory status (which files are modified, staged, etc.).</td></tr>
+    <tr><td><code>git add</code></td><td>Stages a file or files to be committed.</td></tr>
+    <tr><td><code>git commit -m "message"</code></td><td>Commits staged changes to the local repository with a message.</td></tr>
+    <tr><td><code>git push</code></td><td>Pushed committed changes to the remote repository.</td></tr>
+    <tr><td><code>git pull</code></td><td>Fetches and merges changes from the remote repository to your local working directory.</td></tr>
+    <tr><td><code>git fetch</code></td><td>Downloads objects and refs from another repository (without merging).</td></tr>
+    <tr><td><code>git merge</code></td><td>Merges changes from the specified branch into the current branch.</td></tr>
+    <tr><td><code>git log</code></td><td>Shows the commit history of the repository.</td></tr>
+    <tr><td><code>git diff</code></td><td>Shows the differences between your working directory and the index (staged changes).</td></tr>
+</table>
+
+<h3>Branching Commands (Managing branches)</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><code>git branch</code></td><td>Lists all branches in your repository.</td></tr>
+    <tr><td><code>git branch &lt;branch_name&gt;</code></td><td>Creates a new branch.</td></tr>
+    <tr><td><code>git checkout &lt;branch_name&gt;</code></td><td>Switches to an existing branch.</td></tr>
+    <tr><td><code>git checkout -b &lt;branch_name&gt;</code></td><td>Creates and switches to a new branch in one step.</td></tr>
+    <tr><td><code>git merge &lt;branch_name&gt;</code></td><td>Merges changes from the specified branch into the current branch.</td></tr>
+    <tr><td><code>git rebase &lt;branch_name&gt;</code></td><td>Applies changes from one branch onto another branch (instead of merging).</td></tr>
+    <tr><td><code>git branch -d &lt;branch_name&gt;</code></td><td>Deletes the specified branch (locally).</td></tr>
+    <tr><td><code>git branch -D &lt;branch_name&gt;</code></td><td>Forcefully deletes a branch (locally).</td></tr>
+    <tr><td><code>git remote set-head origin &lt;branch_name&gt;</code></td><td>Sets the default branch for the remote repository.</td></tr>
+</table>
+
+<h3>Remote Commands (Managing remotes and syncing with the cloud)</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><code>git remote -v</code></td><td>Shows the remote repository URLs.</td></tr>
+    <tr><td><code>git remote add</code></td><td>Adds a new remote repository.</td></tr>
+    <tr><td><code>git remote remove</code></td><td>Removes a remote repository.</td></tr>
+    <tr><td><code>git push origin &lt;branch_name&gt;</code></td><td>Pushed a branch to a remote repository.</td></tr>
+    <tr><td><code>git push -u origin &lt;branch_name&gt;</code></td><td>Pushed a branch to a remote repository and sets the upstream for the branch.</td></tr>
+    <tr><td><code>git pull origin &lt;branch_name&gt;</code></td><td>Fetches and merges a branch from the remote repository.</td></tr>
+    <tr><td><code>git fetch origin</code></td><td>Downloads objects and refs from the remote repository.</td></tr>
+    <tr><td><code>git remote show origin</code></td><td>Displays detailed information about a remote repository.</td></tr>
+</table>
+
+<h3>Staging and Committing (Managing changes)</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><code>git add .</code></td><td>Stages all modified files in the working directory.</td></tr>
+    <tr><td><code>git add -A</code></td><td>Stages all modified files (including file deletions).</td></tr>
+    <tr><td><code>git reset</code></td><td>Unstages a file (reverts it to the working directory).</td></tr>
+    <tr><td><code>git commit --amend</code></td><td>Modifies the last commit (can change the commit message or add changes).</td></tr>
+    <tr><td><code>git commit --all</code></td><td>Automatically stages tracked files and commits them.</td></tr>
+    <tr><td><code>git commit -a</code></td><td>Stages and commits all modified files.</td></tr>
+    <tr><td><code>git commit --no-verify</code></td><td>Skips pre-commit hooks while committing.</td></tr>
+    <tr><td><code>git reset --soft HEAD~1</code></td><td>Moves the HEAD pointer back one commit but leaves your changes staged.</td></tr>
+    <tr><td><code>git reset --hard HEAD~1</code></td><td>Moves the HEAD pointer back one commit and discards changes in the working directory.</td></tr>
+</table>
+
+<h3>Viewing and Comparing Changes (Inspecting changes)</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><code>git diff</code></td><td>Shows changes between your working directory and the index (unstaged changes).</td></tr>
+    <tr><td><code>git diff --staged</code></td><td>Shows changes between the index (staged files) and the last commit.</td></tr>
+    <tr><td><code>git diff &lt;commit_id&gt;</code></td><td>Shows the differences between your working directory and a specific commit.</td></tr>
+    <tr><td><code>git log</code></td><td>Displays the commit history.</td></tr>
+    <tr><td><code>git log --oneline</code></td><td>Displays the commit history in a simplified one-line format.</td></tr>
+    <tr><td><code>git log --graph</code></td><td>Displays the commit history as a graph.</td></tr>
+    <tr><td><code>git log --author="name"</code></td><td>Filters commits by a specific author.</td></tr>
+    <tr><td><code>git log --since="2 weeks ago"</code></td><td>Filters commits made after a specific date.</td></tr>
+    <tr><td><code>git blame</code></td><td>Shows line-by-line annotations for a file, telling who last modified each line.</td></tr>
+    <tr><td><code>git show &lt;commit_id&gt;</code></td><td>Shows details of a specific commit (including diff and metadata).</td></tr>
+    <tr><td><code>git show &lt;commit_id&gt;:&lt;file_path&gt;</code></td><td>Shows a specific file at a particular commit.</td></tr>
+</table>
+
+<h3>Reverting and Resetting (Undoing changes)</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><code>git reset &lt;commit_id&gt;</code></td><td>Moves HEAD to a specific commit, leaving your working directory intact (can be used with --soft, --mixed, or --hard).</td></tr>
+    <tr><td><code>git reset --hard &lt;commit_id&gt;</code></td><td>Resets your working directory, index, and HEAD to a specific commit (all changes will be lost).</td></tr>
+    <tr><td><code>git reset --soft &lt;commit_id&gt;</code></td><td>Resets only the HEAD to a specific commit, leaving staged changes.</td></tr>
+    <tr><td><code>git reset --mixed &lt;commit_id&gt;</code></td><td>Resets the HEAD and index to a specific commit but keeps the working directory unchanged.</td></tr>
+    <tr><td><code>git revert &lt;commit_id&gt;</code></td><td>Creates a new commit that undoes the changes of the specified commit.</td></tr>
+    <tr><td><code>git restore</code></td><td>Restores the file(s) in the working directory from the index or a commit.</td></tr>
+    <tr><td><code>git restore --staged</code></td><td>Removes a file from the staging area.</td></tr>
+    <tr><td><code>git clean -f</code></td><td>Removes untracked files in the working directory.</td></tr>
+    <tr><td><code>git clean -fd</code></td><td>Removes untracked files and directories.</td></tr>
+</table>
+
+<h3>Stashing (Temporarily saving changes)</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><code>git stash</code></td><td>Stashes the changes in your working directory (both staged and unstaged).</td></tr>
+    <tr><td><code>git stash list</code></td><td>Lists all the stashes.</td></tr>
+</table>
+
+<h3>Git Stash</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">git stash pop</div></td><td>Applies the latest stash and removes it from the stash list.</td></tr>
+    <tr><td><div class="command-box">git stash apply</div></td><td>Applies a stash without removing it from the list.</td></tr>
+    <tr><td><div class="command-box">git stash drop</div></td><td>Removes a specific stash from the stash list.</td></tr>
+    <tr><td><div class="command-box">git stash clear</div></td><td>Clears all stashes.</td></tr>
+    <tr><td><div class="command-box">git stash save "message"</div></td><td>Stashes changes with an optional message for identification.</td></tr>
+    <tr><td><div class="command-box">git stash branch &lt;branch_name&gt;</div></td><td>Creates a new branch from the stash and applies it.</td></tr>
+</table>
+
+<h3>Tags (Managing versions)</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">git tag</div></td><td>Lists all tags in the repository.</td></tr>
+    <tr><td><div class="command-box">git tag &lt;tag_name&gt;</div></td><td>Creates a new tag at the current commit.</td></tr>
+    <tr><td><div class="command-box">git tag -a &lt;tag_name&gt; -m "message"</div></td><td>Creates an annotated tag with a message.</td></tr>
+    <tr><td><div class="command-box">git tag -d &lt;tag_name&gt;</div></td><td>Deletes a tag locally.</td></tr>
+    <tr><td><div class="command-box">git push origin &lt;tag_name&gt;</div></td><td>Pushed a specific tag to the remote repository.</td></tr>
+    <tr><td><div class="command-box">git push origin --tags</div></td><td>Pushed all tags to the remote repository.</td></tr>
+    <tr><td><div class="command-box">git fetch --tags</div></td><td>Fetches all tags from the remote repository.</td></tr>
+</table>
+
+<h3>Git Config and Info (Configuration and repository information)</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">git config --global user.name "Your Name"</div></td><td>Sets your global username for commits.</td></tr>
+    <tr><td><div class="command-box">git config --global user.email "youremail@example.com"</div></td><td>Sets your global email for commits.</td></tr>
+    <tr><td><div class="command-box">git config --list</div></td><td>Lists all configuration settings.</td></tr>
+    <tr><td><div class="command-box">git config &lt;option&gt;</div></td><td>Sets a specific configuration option.</td></tr>
+    <tr><td><div class="command-box">git config --global core.editor &lt;editor&gt;</div></td><td>Sets the default text editor for Git.</td></tr>
+    <tr><td><div class="command-box">git config --global color.ui true</div></td><td>Enables colored output in Git.</td></tr>
+    <tr><td><div class="command-box">git config --global alias.st status</div></td><td>Creates a custom Git alias (e.g., git st for git status).</td></tr>
+</table>
+
+<h3>Git Aliases (Custom commands)</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">git config --global alias.&lt;alias_name&gt; &lt;actual_command&gt;</div></td><td>Creates a new Git alias for an existing command.</td></tr>
+    <tr><td><div class="command-box">git config --global alias.co checkout</div></td><td>Example of creating an alias.</td></tr>
+</table>
+
+<h3>Git Hooks (Automated scripts triggered by Git actions)</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">git init</div></td><td>Creates a .git/hooks directory, where hook scripts are stored.</td></tr>
+    <tr><td><div class="command-box">git commit-msg</div></td><td>A hook that runs before a commit message is saved (you can use this to enforce message formats).</td></tr>
+    <tr><td><div class="command-box">git pre-commit</div></td><td>A hook that runs before a commit is made (can be used for checks like linting).</td></tr>
+    <tr><td><div class="command-box">git post-commit</div></td><td>A hook that runs after a commit is made.</td></tr>
+</table>
+
+<h3>Git Submodules (Managing external repositories within a project)</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">git submodule add &lt;repo_url&gt;</div></td><td>Adds a new submodule to the repository (downloads an external repo).</td></tr>
+    <tr><td><div class="command-box">git submodule init</div></td><td>Initializes the submodules configured in the repository (after cloning).</td></tr>
+    <tr><td><div class="command-box">git submodule update</div></td><td>Updates the submodules to the commit specified in the superproject.</td></tr>
+    <tr><td><div class="command-box">git submodule status</div></td><td>Displays the current commit of the submodule.</td></tr>
+    <tr><td><div class="command-box">git submodule deinit</div></td><td>Removes a submodule from the working directory.</td></tr>
+    <tr><td><div class="command-box">git submodule update --remote</div></td><td>Updates the submodule to the latest commit from the remote repository.</td></tr>
+    <tr><td><div class="command-box">git submodule foreach</div></td><td>Runs a command in each submodule.</td></tr>
+</table>
+
+<h3>Git Workflow Commands (Working with others and managing collaboration)</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">git pull --rebase</div></td><td>Fetches and applies remote changes, rebasing your local commits on top of them.</td></tr>
+    <tr><td><div class="command-box">git rebase -i &lt;commit_id&gt;</div></td><td>Starts an interactive rebase to modify commit history (e.g., squash, reword commits).</td></tr>
+    <tr><td><div class="command-box">git rebase --continue</div></td><td>Continues the rebase after resolving conflicts.</td></tr>
+    <tr><td><div class="command-box">git rebase --abort</div></td><td>Aborts the rebase process and restores the original state.</td></tr>
+    <tr><td><div class="command-box">git merge --no-ff</div></td><td>Merges a branch with a "no fast-forward" option to ensure a merge commit is created even when possible to do a fast-forward merge.</td></tr>
+    <tr><td><div class="command-box">git pull --no-commit</div></td><td>Pulls changes but doesn't automatically commit them.</td></tr>
+    <tr><td><div class="command-box">git push --force-with-lease</div></td><td>Forces push but checks if the remote branch has been updated (safer than git push --force).</td></tr>
+    <tr><td><div class="command-box">git push --force</div></td><td>Forces a push to the remote branch, potentially overwriting changes.</td></tr>
+    <tr><td><div class="command-box">git cherry-pick &lt;commit_id&gt;</div></td><td>Applies the changes from a specific commit onto the current branch.</td></tr>
+</table>
+
+<h3>Git Merge Strategies (Handling merge conflicts and strategies)</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">git merge --strategy=ours &lt;branch_name&gt;</div></td><td>Resolves merge conflicts by favoring the current branch’s changes.</td></tr>
+    <tr><td><div class="command-box">git merge --strategy=theirs &lt;branch_name&gt;</div></td><td>Resolves merge conflicts by favoring the other branch’s changes.</td></tr>
+    <tr><td><div class="command-box">git merge --abort</div></td><td>Aborts the merge process if there are conflicts and restores the working directory.</td></tr>
+</table>
+
+<h3>Git Bisect (Finding the commit that introduced a bug)</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">git bisect start</div></td><td>Starts a binary search for the commit that introduced a bug.</td></tr>
+    <tr><td><div class="command-box">git bisect bad</div></td><td>Marks the current commit as "bad" (where the bug is present).</td></tr>
+    <tr><td><div class="command-box">git bisect good &lt;commit_id&gt;</div></td><td>Marks a commit as "good" (where the bug was not present).</td></tr>
+    <tr><td><div class="command-box">git bisect reset</div></td><td>Ends the bisect process and restores the repository to the state it was before starting the bisect.</td></tr>
+    <tr><td><div class="command-box">git bisect log</div></td><td>Displays the log of the bisect process.</td></tr>
+</table>
+
+<h3>Git Hooks for Automation (Pre-commit and post-commit hooks)</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">git commit-msg</div></td><td>A hook script that runs before the commit message is finalized (you can use this to enforce rules, like requiring certain keywords).</td></tr>
+    <tr><td><div class="command-box">git pre-commit</div></td><td>A hook that can be used to run checks on files before the commit is finalized, such as linters or tests.</td></tr>
+    <tr><td><div class="command-box">git post-commit</div></td><td>A hook that is triggered after a commit has been completed, useful for triggering actions like notifications or build processes.</td></tr>
+    <tr><td><div class="command-box">git pre-push</div></td><td>A hook that runs before a push to the remote repository is initiated.</td></tr>
+    <tr><td><div class="command-box">git post-merge</div></td><td>A hook that runs after a merge, ideal for cleanup or setup tasks.</td></tr>
+</table>
+
+<h3>Git Clean and Prune (Cleaning up untracked files and garbage collection)</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">git clean -n</div></td><td>Shows which untracked files would be removed, but doesn’t actually delete them.</td></tr>
+    <tr><td><div class="command-box">git clean -f</div></td><td>Removes untracked files from the working directory.</td></tr>
+    <tr><td><div class="command-box">git clean -fd</div></td><td>Removes untracked files and directories.</td></tr>
+    <tr><td><div class="command-box">git gc</div></td><td>Runs garbage collection, cleaning up unnecessary files and optimizing the repository.</td></tr>
+    <tr><td><div class="command-box">git prune</div></td><td>Removes objects that are no longer needed (generally used for cleaning up in repositories with lots of history).</td></tr>
+</table>
+
+<h3>Git Archive (Creating a snapshot of the repository)</h3>
+<p>Details about creating a snapshot of the repository are not provided in the content.</p>
+
+<h3>Git Archive</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">git archive --format=tar --output=&lt;output_file&gt;.tar &lt;branch_name&gt;</div></td><td>Creates a tarball archive of the repository at a specific branch.</td></tr>
+    <tr><td><div class="command-box">git archive --format=zip --output=&lt;output_file&gt;.zip &lt;branch_name&gt;</div></td><td>Creates a zip archive of the repository at a specific branch.</td></tr>
+</table>
+
+<h3>Git Blame and Annotate</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">git blame &lt;file_path&gt;</div></td><td>Shows who last modified each line of a file and when.</td></tr>
+    <tr><td><div class="command-box">git annotate &lt;file_path&gt;</div></td><td>An alias for git blame, which displays commit information for each line of a file.</td></tr>
+</table>
+
+<h3>Git Reflog</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">git reflog</div></td><td>Displays a log of all movements of the HEAD pointer.</td></tr>
+    <tr><td><div class="command-box">git reflog show</div></td><td>Displays a detailed view of HEAD and the state of the repository.</td></tr>
+    <tr><td><div class="command-box">git reflog expire --expire=now --all</div></td><td>Removes all reflog entries that have expired.</td></tr>
+    <tr><td><div class="command-box">git reflog delete &lt;ref_id&gt;</div></td><td>Deletes a specific reflog entry.</td></tr>
+</table>
+
+<h3>Git for Continuous Integration/Continuous Deployment (CI/CD)</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">git fetch --all</div></td><td>Fetches all branches from all remotes, often used before triggering a build or deployment.</td></tr>
+    <tr><td><div class="command-box">git merge origin/&lt;branch_name&gt;</div></td><td>Merges the latest changes from a remote branch into the local branch.</td></tr>
+    <tr><td><div class="command-box">git push --force-with-lease</div></td><td>Pushing changes forcefully while ensuring that the remote branch hasn’t changed unexpectedly.</td></tr>
+    <tr><td><div class="command-box">git rebase origin/&lt;branch_name&gt;</div></td><td>Ensures your branch is up to date with the base branch before merging or deploying.</td></tr>
+    <tr><td><div class="command-box">git tag &lt;version_number&gt;</div></td><td>Tagging is essential for versioning releases in DevOps.</td></tr>
+</table>
+
+<h3>Git for Managing Infrastructure as Code (IaC)</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">git clone &lt;IaC_repo_url&gt;</div></td><td>Clone repositories that contain configuration files or infrastructure code.</td></tr>
+    <tr><td><div class="command-box">git checkout &lt;branch_name&gt;</div></td><td>Switch to a branch that contains a specific environment’s infrastructure code.</td></tr>
+    <tr><td><div class="command-box">git pull origin &lt;branch_name&gt;</div></td><td>Pull the latest changes to infrastructure code before applying configurations.</td></tr>
+    <tr><td><div class="command-box">git submodule</div></td><td>Manage shared code or dependencies across multiple infrastructure repositories.</td></tr>
+</table>
+
+<h3>Git Hooks for DevOps Automation</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">git pre-commit</div></td><td>Automatically run tests or linters on code before it’s committed.</td></tr>
+    <tr><td><div class="command-box">git post-merge</div></td><td>Automatically trigger deployment processes or run tests after a merge.</td></tr>
+    <tr><td><div class="command-box">git pre-push</div></td><td>Run a script to test whether the pushed code will break something in production.</td></tr>
+    <tr><td><div class="command-box">git commit-msg</div></td><td>Enforce commit message conventions, often integrated into CI/CD pipelines.</td></tr>
+</table>
+
+<h3>Git for Feature Flag Management</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">git branch &lt;feature_flag_name&gt;</div></td><td>Create a branch dedicated to developing a specific feature.</td></tr>
+    <tr><td><div class="command-box">git checkout -b &lt;feature_flag_branch&gt;</div></td><td>Create a new branch to work on a feature behind a feature flag.</td></tr>
+    <tr><td><div class="command-box">git merge &lt;feature_flag_branch&gt;</div></td><td>Merge a completed feature flag branch into the main codebase.</td></tr>
+</table>
+
+<h3>Git for Multi-Environment Deployments</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">git checkout &lt;environment_branch&gt;</div></td><td>Switch to the branch corresponding to the environment you are deploying to.</td></tr>
+    <tr><td><div class="command-box">git pull origin &lt;environment_branch&gt;</div></td><td>Ensure your local branch is up to date with the latest code before deploying.</td></tr>
+    <tr><td><div class="command-box">git merge --no-ff &lt;feature_branch&gt;</div></td><td>Merge feature branches into specific environment branches with a merge commit.</td></tr>
+    <tr><td><div class="command-box">git tag &lt;release_version&gt;</div></td><td>Tag releases when promoting code to staging or production environments.</td></tr>
+</table>
+
+<h3>Git and Deployment Automation</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">git push origin &lt;branch_name&gt;</div></td><td>Triggers CI/CD pipelines that automatically deploy code.</td></tr>
+    <tr><td><div class="command-box">git tag &lt;tag_name&gt;</div></td><td>Trigger specific deployment pipelines to automatically deploy code.</td></tr>
+    <tr><td><div class="command-box">git reset --hard</div></td><td>Reset the working directory to a known state before deploying.</td></tr>
+</table>
+
+<h3>GitOps Workflow</h3>
+<p>GitOps is an approach to Continuous Deployment where Git repositories are the source of truth for infrastructure and application configuration.</p>
+
+<h3>GitOps and Deployment Pipelines</h3>
+<p>In GitOps, pushing changes to a Git repository automatically triggers deployment pipelines. For instance, when code or configuration files are pushed to Git, the repository can trigger an automation system (like ArgoCD or Flux) to apply those changes to a Kubernetes cluster or other environments.</p>
+
+<h3>Cloning GitOps Repositories</h3>
+<div class="command-box">
+# Clone a repository
+git clone &lt;repo_url&gt;
+</div>
+<p>Developers clone GitOps repositories to inspect or modify deployment configurations stored as code.</p>
+
+<h3>Advanced Git for Managing CI/CD Pipelines</h3>
+<p>Many CI/CD systems, such as Jenkins, GitLab CI, and CircleCI, integrate directly with Git to trigger build and deployment pipelines. Some useful Git-related practices:</p>
+
+<div class="best-practice">Use the following commands in your CI/CD workflows:</div>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><code>git push --tags</code></td><td>Trigger a CI/CD pipeline that specifically looks for tags to start a deployment (e.g., deploying to production when a v1.0.0 tag is created).</td></tr>
+    <tr><td><code>git fetch --tags</code></td><td>Use this command in CI/CD pipelines to fetch the latest tags and ensure the correct version of the code is deployed.</td></tr>
+    <tr><td><code>git log --oneline --graph</code></td><td>Useful in CI/CD pipeline scripts to visualize or check commit histories during pipeline execution, helping to verify which changes are deployed to which environments.</td></tr>
+    <tr><td><code>git diff &lt;commit_id&gt; &lt;commit_id&gt;</code></td><td>In CI/CD, you might want to see the changes between commits to decide whether a particular build should be triggered (e.g., when testing, you might only want to run tests for certain changed files).</td></tr>
+</table>
+
+<h3>Git and Docker Integration</h3>
+<p>In DevOps, Git is frequently used alongside Docker for containerized applications. Here’s how Git plays a role in the Docker workflow:</p>
+
+<div class="best-practice">Use the following commands for Docker workflows:</div>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><code>git clone &lt;repo_url&gt;</code></td><td>Clone a repository that contains a Dockerfile and application code, which you can then use to build Docker images.</td></tr>
+    <tr><td><code>git checkout</code></td><td>Switch to a branch where different Docker images or container configurations might be defined.</td></tr>
+    <tr><td><code>git pull origin &lt;branch_name&gt;</code></td><td>Pull the latest code from the branch and rebuild Docker images to include the latest changes.</td></tr>
+    <tr><td><code>git tag</code></td><td>Use Git tags to tag a version of the Docker image (e.g., v1.0.0), which can then be used for tagging Docker images when pushed to a container registry.</td></tr>
+</table>
+
+<h3>Git and Secrets Management</h3>
+<p>DevOps teams often use Git to manage code along with secret management tools for deployment, often using .gitignore to keep sensitive files like secrets out of version control.</p>
+
+<div class="best-practice">Use the following commands to manage secrets:</div>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><code>git rm --cached</code></td><td>Remove a file from version control, useful if secrets were accidentally committed.</td></tr>
+    <tr><td><code>git commit --amend</code></td><td>If secrets were committed accidentally, this can be used to amend the last commit and remove them from history.</td></tr>
+    <tr><td><code>git rebase -i</code></td><td>Used to rewrite history if secrets were committed in previous commits, ensuring that sensitive information is completely removed from Git history.</td></tr>
+</table>
+
+<h3>Git Rebase and Interactive Rebase</h3>
+<p>Rebase is essential in DevOps to clean up commit history before merging feature branches into the main branch, especially when maintaining a clean and linear Git history for CI/CD pipelines.</p>
+
+<div class="best-practice">Use the following commands for rebasing:</div>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><code>git rebase -i &lt;commit_id&gt;</code></td><td>Starts an interactive rebase, allowing you to reorder, squash, or amend commits in a branch.</td></tr>
+    <tr><td><code>git rebase --onto</code></td><td>Used to rebase a branch onto a new base commit. Useful when moving a feature branch or integrating changes that originated from a different base.</td></tr>
+    <tr><td><code>git rebase --skip</code></td><td>Skips the current commit while rebasing, useful if there’s a conflict or you don’t want to include a specific commit in the rebase.</td></tr>
+    <tr><td><code>git rebase --continue</code></td><td>Continues the rebase process after resolving any conflicts.</td></tr>
+</table>
+
+<h3>Git Merge Conflict Resolution</h3>
+<p>Merge conflicts are common when multiple developers work on the same files or parts of the code. Git provides tools for resolving conflicts efficiently.</p>
+
+<div class="best-practice">Use the following commands for conflict resolution:</div>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><code>git mergetool</code></td><td>Opens an external merge tool to help resolve conflicts. Can be configured to use tools like vimdiff, meld, kdiff3, etc.</td></tr>
+    <tr><td><code>git merge --abort</code></td><td>Aborts the merge process if conflicts occur and restores the state before the merge.</td></tr>
+    <tr><td><code>git diff &lt;branch_1&gt; &lt;branch_2&gt;</code></td><td>Shows the differences between two branches to help you identify and resolve conflicts before merging.</td></tr>
+    <tr><td><code>git status</code></td><td>Shows which files are in conflict and need to be resolved manually.</td></tr>
+</table>
+
+<h3>Git Commit Signing</h3>
+<p>In DevOps, ensuring the authenticity of code changes and that commits are made by authorized developers is important. Git supports signing commits and tags using GPG keys.</p>
+
+<div class="best-practice">Use the following commands for commit signing:</div>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><code>git config --global user.signingkey &lt;key_id&gt;</code></td><td>Configures the GPG key to sign commits and tags.</td></tr>
+    <tr><td><code>git commit --gpg-sign</code></td><td>Signs a commit with your GPG key.</td></tr>
+    <tr><td><code>git tag -s &lt;tag_name&gt;</code></td><td>Creates a signed tag (useful for marking important release points).</td></tr>
+</table>
+
+<h3>Git for Continuous Delivery (Automated release management)</h3>
+<p>In DevOps, Git repositories are frequently tied to automated release pipelines. Here are a few practices related to release management.</p>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">git push --tags</div></td><td>Pushes tags to the remote repository, triggering deployment processes in CI/CD pipelines. For example, pushing a release tag like v1.0.0 might trigger deployment to production.</td></tr>
+    <tr><td><div class="command-box">git push origin &lt;branch_name&gt;:&lt;remote_branch&gt;</div></td><td>Pushes a local branch to a remote branch, ensuring that your changes are reflected in the remote environment. Often used in CI/CD to sync code with the cloud.</td></tr>
+    <tr><td><div class="command-box">git branch -m &lt;old_name&gt; &lt;new_name&gt;</div></td><td>Renames a branch, which can be useful in DevOps workflows when a feature is moved to a new stage (e.g., from feature-xyz to staging).</td></tr>
+    <tr><td><div class="command-box">git merge --no-ff &lt;branch_name&gt;</div></td><td>Forces Git to always create a merge commit, even if it could be a fast-forward merge. This is useful for preserving the context of feature branches in release management.</td></tr>
+</table>
+
+<h3>Git for Rollbacks (Reverting to previous versions)</h3>
+<p>In DevOps, the ability to quickly roll back code changes to a stable state is critical, especially in production environments.</p>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">git revert &lt;commit_id&gt;</div></td><td>Reverts the changes from a specific commit by creating a new commit that undoes the changes. This is often used when a production deployment causes issues.</td></tr>
+    <tr><td><div class="command-box">git reset --hard &lt;commit_id&gt;</div></td><td>Resets the repository to a previous commit and discards changes in the working directory. This can be used to roll back to a stable state.</td></tr>
+    <tr><td><div class="command-box">git log --oneline</div></td><td>Use this command to find the commit hash for the state you want to roll back to.</td></tr>
+    <tr><td><div class="command-box">git checkout &lt;commit_id&gt;</div></td><td>Checks out an older commit, allowing you to inspect the repository at that point in time or even deploy an older version of the app.</td></tr>
+</table>
+
+<h3>Git Submodules and Subtrees (Managing dependencies and libraries)</h3>
+<p>Git submodules and subtrees are used in DevOps to manage dependencies or external libraries in your repository.</p>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">git submodule update --recursive</div></td><td>Updates all submodules, ensuring that all dependencies are in sync.</td></tr>
+    <tr><td><div class="command-box">git submodule init</div></td><td>Initializes submodules after cloning a repository that contains them.</td></tr>
+    <tr><td><div class="command-box">git submodule add &lt;repo_url&gt;</div></td><td>Adds a submodule to your repository. Submodules allow you to manage external dependencies as part of your Git repository.</td></tr>
+    <tr><td><div class="command-box">git subtree add --prefix= &lt;repo_url&gt; &lt;branch_name&gt;</div></td><td>Allows you to integrate an external repository into a subdirectory within your repository, useful when managing code that needs to be bundled with your application.</td></tr>
+</table>
+
+<h3>Git for Team Collaboration and Code Review (Facilitating teamwork)</h3>
+<p>Git plays a crucial role in facilitating collaboration between DevOps teams, particularly for code reviews, pull requests, and continuous integration.</p>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">git push origin &lt;feature_branch&gt;</div></td><td>Pushes a feature branch to a remote, which can be used in collaboration tools (e.g., GitHub, GitLab, Bitbucket) for code review and pull requests.</td></tr>
+    <tr><td><div class="command-box">git fetch origin &lt;feature_branch&gt;</div></td><td>Fetches a feature branch from a remote repository so that team members can review it or test it locally.</td></tr>
+    <tr><td><div class="command-box">git pull origin &lt;feature_branch&gt;</div></td><td>Pulls the latest changes from a feature branch into your local repository, often used when testing code changes before merging.</td></tr>
+    <tr><td><div class="command-box">git diff &lt;branch_name&gt;</div></td><td>Compare different branches (e.g., comparing feature-xyz with main branch) before merging them.</td></tr>
+</table>
+
+<h3>Git and Containerized Environments (Kubernetes, Docker) (Managing deployments in containers)</h3>
+<p>In DevOps environments, Git is frequently used to manage the source code for applications that run in containers. Git commands can facilitate container image builds and deployment pipelines.</p>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">git clone &lt;repo_url&gt;</div></td><td>Clones a repository containing code and configurations for building Docker containers or Kubernetes manifests.</td></tr>
+    <tr><td><div class="command-box">git checkout</div></td><td>Switches between branches to test different versions of a Dockerized application or configuration files.</td></tr>
+    <tr><td><div class="command-box">git pull origin &lt;branch_name&gt;</div></td><td>Pull the latest code from a Git repository before rebuilding Docker images or Kubernetes configurations.</td></tr>
+    <tr><td><div class="command-box">git tag</div></td><td>Tags releases to facilitate versioning of Docker images or Kubernetes deployments. For example, pushing a tag v1.0.0 may automatically trigger a CI/CD pipeline that builds and deploys a Docker image.</td></tr>
+    <tr><td><div class="command-box">git submodule add &lt;repo_url&gt;</div></td><td>Can be used to add a Git repository as a submodule, allowing you to include external configuration files, such as Dockerfiles or Helm charts, in your repository.</td></tr>
+</table>
+
+<h3>Git for Managing Build and Deployment Pipelines</h3>
+<p>Git is tightly integrated with CI/CD systems, where it triggers build and deployment processes based on repository changes. Here are key Git commands related to build automation:</p>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">git push origin</div></td><td>Pushed your branch to the remote repository, triggering the build process in your CI/CD tool.</td></tr>
+    <tr><td><div class="command-box">git tag &lt;build_version&gt;</div></td><td>Tags a commit with a version number, which might trigger deployment pipelines for testing or production.</td></tr>
+    <tr><td><div class="command-box">git log --oneline</div></td><td>View a condensed log of the commit history to identify the changes associated with a specific build or deployment.</td></tr>
+    <tr><td><div class="command-box">git push --force-with-lease</div></td><td>Pushed changes to a branch with a safer force push, useful when you need to overwrite history in collaborative CI/CD workflows but without overwriting someone else’s work.</td></tr>
+</table>
+
+<h3>Git for Documentation and Versioning (Managing configuration files and documentation)</h3>
+<p>For DevOps, Git repositories are often used to version configuration files, scripts, and documentation.</p>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">git add</div></td><td>Add configuration or documentation files to the repository for versioning.</td></tr>
+    <tr><td><div class="command-box">git commit -m "add/update documentation"</div></td><td>Commit changes related to documentation, often used in documentation-driven development.</td></tr>
+    <tr><td><div class="command-box">git diff</div></td><td>Compare different versions of documentation files or configuration files, useful when tracking changes in infrastructure or environment files.</td></tr>
+</table>
+
+
+                </section>
             
             <!-- Docker Section -->
             <section id="docker" class="section">
