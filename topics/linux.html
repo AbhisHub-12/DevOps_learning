@@ -97,15 +97,15 @@
 
         <main id="content">
         
-        <section id="section-807e965e" class="section">
-            <h2>Basic Git Commands and Usage</h2>
-            <p class="section-meta">Added: 2025-12-03 12:17</p>
-            <p>This document provides a comprehensive overview of essential Git commands for managing repositories, branches, and changes. It covers basic operations such as initializing a repository, staging changes, and viewing commit history, as well as more advanced features like branching and stashing.</p>
+        <section id="section-9bfee722" class="section">
+            <h2>Basic Git Commands and Management</h2>
+            <p class="section-meta">Added: 2025-12-03 12:32</p>
+            <p>This document provides an overview of essential Git commands for managing repositories, branches, remotes, and changes. It covers basic operations such as initializing repositories, staging and committing changes, and reverting or resetting commits.</p>
             <h3>Key Points</h3>
             <ul>
-                <li>Git is a version control system that helps manage code changes.</li>
-                <li>Basic commands include initializing repositories, staging, committing, and pushing changes.</li>
-                <li>Branching allows for parallel development and easier collaboration.</li>
+                <li>Git commands are essential for version control and collaboration.</li>
+                <li>Branching and merging are crucial for managing different lines of development.</li>
+                <li>Stashing allows temporary saving of changes without committing.</li>
             </ul>
             <h3>Commands</h3>
             <table>
@@ -139,6 +139,18 @@
                     <td>Fetches and merges changes from the remote repository to your local working directory.</td>
                 </tr>
                 <tr>
+                    <td><code>git fetch</code></td>
+                    <td>Downloads objects and refs from another repository (without merging).</td>
+                </tr>
+                <tr>
+                    <td><code>git merge &lt;branch_name&gt;</code></td>
+                    <td>Merges changes from the specified branch into the current branch.</td>
+                </tr>
+                <tr>
+                    <td><code>git log</code></td>
+                    <td>Shows the commit history of the repository.</td>
+                </tr>
+                <tr>
                     <td><code>git branch</code></td>
                     <td>Lists all branches in your repository.</td>
                 </tr>
@@ -147,36 +159,53 @@
                     <td>Switches to an existing branch.</td>
                 </tr>
                 <tr>
-                    <td><code>git merge &lt;branch_name&gt;</code></td>
-                    <td>Merges changes from the specified branch into the current branch.</td>
+                    <td><code>git remote -v</code></td>
+                    <td>Shows the remote repository URLs.</td>
+                </tr>
+                <tr>
+                    <td><code>git stash</code></td>
+                    <td>Stashes the changes in your working directory (both staged and unstaged).</td>
                 </tr>
                 <tr>
                     <td><code>git reset &lt;commit_id&gt;</code></td>
                     <td>Moves HEAD to a specific commit, leaving your working directory intact.</td>
                 </tr>
                 <tr>
-                    <td><code>git stash</code></td>
-                    <td>Stashes the changes in your working directory (both staged and unstaged).</td>
+                    <td><code>git revert &lt;commit_id&gt;</code></td>
+                    <td>Creates a new commit that undoes the changes of the specified commit.</td>
                 </tr>
             </table>
-            <div class="tip">Regularly commit changes to keep track of your progress.</div>
-            <div class="tip">Use branches for new features or bug fixes to avoid disrupting the main codebase.</div>
+            <div class="tip">Always commit changes with meaningful messages for better tracking.</div>
+            <div class="tip">Use branches for new features or bug fixes to keep the main branch stable.</div>
             <div class="best-practice">
-                <p>• Write clear commit messages to describe the changes made.</p>
-                <p>• Pull changes from the remote repository frequently to stay updated with team progress.</p>
+                <p>• Regularly push changes to the remote repository to avoid data loss.</p>
+                <p>• Review changes with 'git diff' before committing to ensure accuracy.</p>
             </div>
         </section>
 
-        <section id="section-5b34bd12" class="section">
+        <section id="section-e462ac45" class="section">
             <h2>Git Stash, Tags, Config, Aliases, Hooks, Submodules, Workflow Commands, Merge Strategies, Bisect, Clean and Prune</h2>
-            <p class="section-meta">Added: 2025-12-03 12:17</p>
-            <p>This section covers various Git commands and concepts including stashing changes, managing tags, configuring Git settings, creating aliases, using hooks for automation, handling submodules, collaborating with others through workflow commands, resolving merge conflicts, finding bugs with bisect, and cleaning up repositories.</p>
+            <p class="section-meta">Added: 2025-12-03 12:32</p>
+            <p>This section covers various Git commands and concepts including stashing changes, managing tags, configuring Git settings, creating aliases, using hooks for automation, handling submodules, and managing collaboration through workflow commands. Additionally, it discusses merge strategies, the bisect process for bug tracking, and cleaning up untracked files.</p>
             <h3>Key Points</h3>
             <ul>
-                <li>Stashing allows you to save changes temporarily without committing them.</li>
+                <li>Stashing allows you to save changes temporarily without committing.</li>
                 <li>Tags are used to mark specific points in the repository's history.</li>
                 <li>Git hooks automate tasks during Git actions.</li>
             </ul>
+            <h3>Code Examples</h3>
+            <p><strong>Stash changes with a message</strong></p>
+            <pre><code class="language-bash">git stash save "message"</code></pre>
+            <p><strong>Create a new tag at the current commit</strong></p>
+            <pre><code class="language-bash">git tag &lt;tag_name&gt;</code></pre>
+            <p><strong>Set global username for commits</strong></p>
+            <pre><code class="language-bash">git config --global user.name "Your Name"</code></pre>
+            <p><strong>Create a custom Git alias for checkout</strong></p>
+            <pre><code class="language-bash">git config --global alias.co checkout</code></pre>
+            <p><strong>Start a binary search for the commit that introduced a bug</strong></p>
+            <pre><code class="language-bash">git bisect start</code></pre>
+            <p><strong>Run garbage collection to clean up unnecessary files</strong></p>
+            <pre><code class="language-bash">git gc</code></pre>
             <h3>Commands</h3>
             <table>
                 <tr><th>Command</th><th>Description</th></tr>
@@ -197,24 +226,20 @@
                     <td>Clears all stashes.</td>
                 </tr>
                 <tr>
-                    <td><code>git stash save "message"</code></td>
-                    <td>Stashes changes with an optional message for identification.</td>
+                    <td><code>git tag -a &lt;tag_name&gt; -m "message"</code></td>
+                    <td>Creates an annotated tag with a message.</td>
                 </tr>
                 <tr>
-                    <td><code>git tag</code></td>
-                    <td>Lists all tags in the repository.</td>
+                    <td><code>git push origin &lt;tag_name&gt;</code></td>
+                    <td>Pushes a specific tag to the remote repository.</td>
                 </tr>
                 <tr>
-                    <td><code>git tag &lt;tag_name&gt;</code></td>
-                    <td>Creates a new tag at the current commit.</td>
+                    <td><code>git config --list</code></td>
+                    <td>Lists all configuration settings.</td>
                 </tr>
                 <tr>
-                    <td><code>git config --global user.name "Your Name"</code></td>
-                    <td>Sets your global username for commits.</td>
-                </tr>
-                <tr>
-                    <td><code>git config --global user.email "youremail@example.com"</code></td>
-                    <td>Sets your global email for commits.</td>
+                    <td><code>git config --global core.editor</code></td>
+                    <td>Sets the default text editor for Git.</td>
                 </tr>
                 <tr>
                     <td><code>git pull --rebase</code></td>
@@ -225,60 +250,47 @@
                     <td>Merges a branch with a 'no fast-forward' option.</td>
                 </tr>
                 <tr>
-                    <td><code>git bisect start</code></td>
-                    <td>Starts a binary search for the commit that introduced a bug.</td>
+                    <td><code>git bisect bad</code></td>
+                    <td>Marks the current commit as 'bad'.</td>
                 </tr>
                 <tr>
                     <td><code>git clean -f</code></td>
                     <td>Removes untracked files from the working directory.</td>
                 </tr>
                 <tr>
-                    <td><code>git gc</code></td>
-                    <td>Runs garbage collection, cleaning up unnecessary files.</td>
+                    <td><code>git prune</code></td>
+                    <td>Removes objects that are no longer needed.</td>
                 </tr>
             </table>
-            <div class="tip">Use descriptive messages when stashing changes for easier identification later.</div>
+            <div class="tip">Use stashing to save work in progress before switching branches.</div>
             <div class="tip">Regularly clean up your repository to maintain performance.</div>
             <div class="best-practice">
-                <p>• Always pull changes before starting new work to avoid conflicts.</p>
-                <p>• Use tags to mark release points in your project for easy reference.</p>
+                <p>• Always provide meaningful messages when creating tags.</p>
+                <p>• Use hooks to enforce coding standards and automate testing.</p>
             </div>
         </section>
 
-        <section id="section-7678fc8d" class="section">
+        <section id="section-edfe73fe" class="section">
             <h2>Git Commands for DevOps and CI/CD</h2>
-            <p class="section-meta">Added: 2025-12-03 12:17</p>
-            <p>This section covers essential Git commands and practices for DevOps, focusing on Continuous Integration/Continuous Deployment (CI/CD), Infrastructure as Code (IaC), and automation through Git hooks. It highlights how Git can be utilized for managing code, tracking changes, and deploying applications across multiple environments.</p>
+            <p class="section-meta">Added: 2025-12-03 12:32</p>
+            <p>This section covers essential Git commands and practices for DevOps, focusing on Continuous Integration/Continuous Deployment (CI/CD), Infrastructure as Code (IaC), and deployment automation. It highlights how Git can be utilized to manage code, automate processes, and ensure stable deployments across multiple environments.</p>
             <h3>Key Points</h3>
             <ul>
-                <li>Git commands are crucial for CI/CD pipelines and managing Infrastructure as Code.</li>
-                <li>Git hooks automate tasks within the DevOps pipeline, ensuring code quality and stability.</li>
-                <li>Versioning and tagging in Git are essential for consistent deployments across environments.</li>
+                <li>Git commands facilitate CI/CD processes by managing code versions and automating deployments.</li>
+                <li>Infrastructure as Code (IaC) can be effectively managed using Git for version control.</li>
+                <li>Git hooks and feature flags enhance automation and control over deployments.</li>
             </ul>
-            <h3>Code Examples</h3>
-            <p><strong>Creates a tarball archive of the repository at a specific branch.</strong></p>
-            <pre><code class="language-bash">git archive --format=tar --output=&lt;output_file&gt;.tar &lt;branch_name&gt;</code></pre>
-            <p><strong>Creates a zip archive of the repository at a specific branch.</strong></p>
-            <pre><code class="language-bash">git archive --format=zip --output=&lt;output_file&gt;.zip &lt;branch_name&gt;</code></pre>
-            <p><strong>Fetches all branches from all remotes.</strong></p>
-            <pre><code class="language-bash">git fetch --all</code></pre>
-            <p><strong>Merges the latest changes from a remote branch into the local branch.</strong></p>
-            <pre><code class="language-bash">git merge origin/</code></pre>
-            <p><strong>Clones repositories that contain configuration files or infrastructure code.</strong></p>
-            <pre><code class="language-bash">git clone &lt;IaC_repo_url&gt;</code></pre>
-            <p><strong>Switches to a branch that contains a specific environment’s infrastructure code.</strong></p>
-            <pre><code class="language-bash">git checkout &lt;branch_name&gt;</code></pre>
-            <p><strong>Pulls the latest changes to infrastructure code before applying configurations.</strong></p>
-            <pre><code class="language-bash">git pull origin &lt;branch_name&gt;</code></pre>
-            <p><strong>Creates a branch dedicated to developing a specific feature.</strong></p>
-            <pre><code class="language-bash">git branch &lt;feature_flag_name&gt;</code></pre>
-            <p><strong>Merges a completed feature flag branch into the main codebase.</strong></p>
-            <pre><code class="language-bash">git merge &lt;feature_flag_branch&gt;</code></pre>
-            <p><strong>Triggers CI/CD pipelines that automatically deploy code to specific environments.</strong></p>
-            <pre><code class="language-bash">git push origin &lt;branch_name&gt;</code></pre>
             <h3>Commands</h3>
             <table>
                 <tr><th>Command</th><th>Description</th></tr>
+                <tr>
+                    <td><code>git archive --format=tar --output=&lt;output_file&gt;.tar &lt;branch_name&gt;</code></td>
+                    <td>Creates a tarball archive of the repository at a specific branch.</td>
+                </tr>
+                <tr>
+                    <td><code>git archive --format=zip --output=&lt;output_file&gt;.zip &lt;branch_name&gt;</code></td>
+                    <td>Creates a zip archive of the repository at a specific branch.</td>
+                </tr>
                 <tr>
                     <td><code>git blame &lt;file_path&gt;</code></td>
                     <td>Shows who last modified each line of a file and when.</td>
@@ -292,16 +304,12 @@
                     <td>Displays a log of all movements of the HEAD pointer.</td>
                 </tr>
                 <tr>
-                    <td><code>git reflog show</code></td>
-                    <td>Displays a detailed view of HEAD and the state of the repository.</td>
+                    <td><code>git fetch --all</code></td>
+                    <td>Fetches all branches from all remotes.</td>
                 </tr>
                 <tr>
-                    <td><code>git reflog expire --expire=now --all</code></td>
-                    <td>Removes all reflog entries that have expired.</td>
-                </tr>
-                <tr>
-                    <td><code>git reflog delete &lt;ref_id&gt;</code></td>
-                    <td>Deletes a specific reflog entry.</td>
+                    <td><code>git merge origin/</code></td>
+                    <td>Merges the latest changes from a remote branch into the local branch.</td>
                 </tr>
                 <tr>
                     <td><code>git push --force-with-lease</code></td>
@@ -313,64 +321,101 @@
                 </tr>
                 <tr>
                     <td><code>git tag &lt;version_number&gt;</code></td>
-                    <td>Tags releases for versioning in CI/CD.</td>
+                    <td>Tags a specific version of the code.</td>
+                </tr>
+                <tr>
+                    <td><code>git clone &lt;IaC_repo_url&gt;</code></td>
+                    <td>Clones repositories that contain configuration files or infrastructure code.</td>
+                </tr>
+                <tr>
+                    <td><code>git checkout</code></td>
+                    <td>Switches to a branch that contains a specific environment’s infrastructure code.</td>
+                </tr>
+                <tr>
+                    <td><code>git pull origin &lt;branch_name&gt;</code></td>
+                    <td>Pulls the latest changes to infrastructure code.</td>
+                </tr>
+                <tr>
+                    <td><code>git submodule</code></td>
+                    <td>Manages shared code or dependencies across multiple infrastructure repositories.</td>
+                </tr>
+                <tr>
+                    <td><code>git pre-commit</code></td>
+                    <td>Automatically runs tests or linters on code before it’s committed.</td>
+                </tr>
+                <tr>
+                    <td><code>git post-merge</code></td>
+                    <td>Triggers deployment processes or runs tests after a merge.</td>
+                </tr>
+                <tr>
+                    <td><code>git pre-push</code></td>
+                    <td>Runs a script to test whether the pushed code will break something in production.</td>
+                </tr>
+                <tr>
+                    <td><code>git commit-msg</code></td>
+                    <td>Enforces commit message conventions.</td>
+                </tr>
+                <tr>
+                    <td><code>git branch &lt;feature_flag_name&gt;</code></td>
+                    <td>Creates a branch dedicated to developing a specific feature.</td>
+                </tr>
+                <tr>
+                    <td><code>git checkout -b &lt;feature_flag_branch&gt;</code></td>
+                    <td>Creates a new branch to work on a feature behind a feature flag.</td>
+                </tr>
+                <tr>
+                    <td><code>git merge &lt;feature_flag_branch&gt;</code></td>
+                    <td>Merges a completed feature flag branch into the main codebase.</td>
+                </tr>
+                <tr>
+                    <td><code>git checkout &lt;environment_branch&gt;</code></td>
+                    <td>Switches to the branch corresponding to the environment you are deploying to.</td>
                 </tr>
                 <tr>
                     <td><code>git merge --no-ff &lt;feature_branch&gt;</code></td>
                     <td>Merges feature branches into specific environment branches with a merge commit.</td>
                 </tr>
                 <tr>
+                    <td><code>git tag &lt;release_version&gt;</code></td>
+                    <td>Tags releases when promoting code to staging or production environments.</td>
+                </tr>
+                <tr>
+                    <td><code>git push origin</code></td>
+                    <td>Triggers CI/CD pipelines that automatically deploy code.</td>
+                </tr>
+                <tr>
                     <td><code>git reset --hard</code></td>
                     <td>Resets the working directory to a known state before deploying.</td>
                 </tr>
             </table>
-            <div class="tip">Use Git hooks to automate testing and deployment processes.</div>
-            <div class="tip">Regularly tag releases to maintain a clear versioning history.</div>
+            <div class="tip">Always fetch the latest changes before merging to avoid conflicts.</div>
+            <div class="tip">Use descriptive commit messages to maintain clarity in version history.</div>
             <div class="best-practice">
-                <p>• Always pull the latest changes before deploying to ensure you are working with the most recent code.</p>
-                <p>• Use descriptive commit messages and enforce conventions through Git hooks.</p>
+                <p>• Implement Git hooks to automate testing and deployment processes.</p>
+                <p>• Use feature flags to manage the deployment of new features safely.</p>
             </div>
         </section>
 
-        <section id="section-2bb82646" class="section">
+        <section id="section-45fb2f34" class="section">
             <h2>Advanced Git for Managing CI/CD Pipelines</h2>
-            <p class="section-meta">Added: 2025-12-03 12:17</p>
-            <p>This section discusses how Git integrates with CI/CD pipelines and Docker workflows, highlighting commands and practices that enhance deployment processes. It also covers secrets management and commit history management using Git.</p>
+            <p class="section-meta">Added: 2025-12-03 12:32</p>
+            <p>This section covers the integration of Git with CI/CD systems, emphasizing how Git commands can trigger build and deployment pipelines. It also discusses the importance of managing commit history and resolving merge conflicts in a collaborative development environment.</p>
             <h3>Key Points</h3>
             <ul>
-                <li>GitOps automates deployment pipelines through Git repository changes.</li>
-                <li>Git commands facilitate CI/CD processes and Docker image management.</li>
-                <li>Secrets management and commit history cleanup are crucial in DevOps.</li>
+                <li>Git commands can trigger CI/CD pipelines for deployments.</li>
+                <li>Managing commit history is crucial for maintaining a clean project history.</li>
+                <li>Merge conflicts can be resolved using Git's built-in tools.</li>
             </ul>
-            <h3>Code Examples</h3>
-            <p><strong>Clone a repository containing Dockerfile and application code</strong></p>
-            <pre><code class="language-bash">git clone &lt;repo_url&gt;</code></pre>
-            <p><strong>Switch to a specific branch</strong></p>
-            <pre><code class="language-bash">git checkout &lt;branch_name&gt;</code></pre>
-            <p><strong>Pull the latest code from a branch</strong></p>
-            <pre><code class="language-bash">git pull origin &lt;branch_name&gt;</code></pre>
-            <p><strong>Remove a file from version control</strong></p>
-            <pre><code class="language-bash">git rm --cached &lt;file&gt;</code></pre>
-            <p><strong>Amend the last commit</strong></p>
-            <pre><code class="language-bash">git commit --amend</code></pre>
-            <p><strong>Start an interactive rebase</strong></p>
-            <pre><code class="language-bash">git rebase -i &lt;commit_id&gt;</code></pre>
-            <p><strong>Sign a commit with your GPG key</strong></p>
-            <pre><code class="language-bash">git commit --gpg-sign</code></pre>
             <h3>Commands</h3>
             <table>
                 <tr><th>Command</th><th>Description</th></tr>
-                <tr>
-                    <td><code>git push</code></td>
-                    <td>Triggers deployment pipelines by pushing changes to a Git repository.</td>
-                </tr>
                 <tr>
                     <td><code>git push --tags</code></td>
                     <td>Triggers a CI/CD pipeline that looks for tags to start a deployment.</td>
                 </tr>
                 <tr>
                     <td><code>git fetch --tags</code></td>
-                    <td>Fetches the latest tags in CI/CD pipelines.</td>
+                    <td>Fetches the latest tags to ensure the correct version of the code is deployed.</td>
                 </tr>
                 <tr>
                     <td><code>git log --oneline --graph</code></td>
@@ -381,39 +426,91 @@
                     <td>Shows changes between commits to decide on triggering builds.</td>
                 </tr>
                 <tr>
+                    <td><code>git clone &lt;repo_url&gt;</code></td>
+                    <td>Clones a repository containing a Dockerfile and application code.</td>
+                </tr>
+                <tr>
+                    <td><code>git checkout</code></td>
+                    <td>Switches to a branch where different Docker images or configurations might be defined.</td>
+                </tr>
+                <tr>
+                    <td><code>git pull origin &lt;branch_name&gt;</code></td>
+                    <td>Pulls the latest code from the branch and rebuilds Docker images.</td>
+                </tr>
+                <tr>
+                    <td><code>git tag</code></td>
+                    <td>Tags a version of the Docker image.</td>
+                </tr>
+                <tr>
+                    <td><code>git rm --cached</code></td>
+                    <td>Removes a file from version control.</td>
+                </tr>
+                <tr>
+                    <td><code>git commit --amend</code></td>
+                    <td>Amends the last commit to remove sensitive information.</td>
+                </tr>
+                <tr>
+                    <td><code>git rebase -i &lt;commit_id&gt;</code></td>
+                    <td>Starts an interactive rebase to clean up commit history.</td>
+                </tr>
+                <tr>
                     <td><code>git rebase --onto</code></td>
                     <td>Rebases a branch onto a new base commit.</td>
+                </tr>
+                <tr>
+                    <td><code>git rebase --skip</code></td>
+                    <td>Skips the current commit while rebasing.</td>
+                </tr>
+                <tr>
+                    <td><code>git rebase --continue</code></td>
+                    <td>Continues the rebase process after resolving conflicts.</td>
+                </tr>
+                <tr>
+                    <td><code>git mergetool</code></td>
+                    <td>Opens an external merge tool to help resolve conflicts.</td>
                 </tr>
                 <tr>
                     <td><code>git merge --abort</code></td>
                     <td>Aborts the merge process and restores the previous state.</td>
                 </tr>
                 <tr>
+                    <td><code>git diff &lt;branch_1&gt; &lt;branch_2&gt;</code></td>
+                    <td>Shows differences between two branches to identify conflicts.</td>
+                </tr>
+                <tr>
+                    <td><code>git status</code></td>
+                    <td>Displays files in conflict that need manual resolution.</td>
+                </tr>
+                <tr>
                     <td><code>git config --global user.signingkey &lt;key_id&gt;</code></td>
-                    <td>Configures the GPG key for signing commits and tags.</td>
+                    <td>Configures the GPG key for signing commits.</td>
+                </tr>
+                <tr>
+                    <td><code>git commit --gpg-sign</code></td>
+                    <td>Signs a commit with your GPG key.</td>
                 </tr>
                 <tr>
                     <td><code>git tag -s &lt;tag_name&gt;</code></td>
-                    <td>Creates a signed tag for marking important release points.</td>
+                    <td>Creates a signed tag for important release points.</td>
                 </tr>
             </table>
-            <div class="tip">Use .gitignore to keep sensitive files like secrets out of version control.</div>
-            <div class="tip">Regularly clean up commit history using rebase to maintain a linear history.</div>
+            <div class="tip">Regularly fetch tags to keep your CI/CD pipeline updated.</div>
+            <div class="tip">Use interactive rebase to maintain a clean commit history before merging.</div>
             <div class="best-practice">
-                <p>• Integrate Git with CI/CD tools for automated deployments.</p>
-                <p>• Use Git tags for versioning Docker images and releases.</p>
+                <p>• Keep sensitive information out of version control using .gitignore.</p>
+                <p>• Resolve merge conflicts promptly to maintain workflow efficiency.</p>
             </div>
         </section>
 
-        <section id="section-19899a4b" class="section">
+        <section id="section-7611a3f4" class="section">
             <h2>Git for Continuous Delivery and Rollbacks</h2>
-            <p class="section-meta">Added: 2025-12-03 12:17</p>
-            <p>This section covers essential Git commands and practices for managing continuous delivery and rollbacks in DevOps. It highlights how Git integrates with automated release pipelines and the importance of reverting changes when necessary.</p>
+            <p class="section-meta">Added: 2025-12-03 12:32</p>
+            <p>This section covers the use of Git in continuous delivery and rollback strategies within DevOps. It highlights commands for managing releases, rolling back changes, and handling dependencies with submodules and subtrees.</p>
             <h3>Key Points</h3>
             <ul>
-                <li>Git commands facilitate automated deployment processes in CI/CD pipelines.</li>
-                <li>Rolling back changes is crucial for maintaining stable production environments.</li>
-                <li>Managing dependencies with Git submodules and subtrees enhances collaboration.</li>
+                <li>Git commands facilitate automated release management in CI/CD pipelines.</li>
+                <li>Rolling back changes is essential for maintaining stability in production environments.</li>
+                <li>Submodules and subtrees help manage external dependencies in Git repositories.</li>
             </ul>
             <h3>Commands</h3>
             <table>
@@ -484,7 +581,7 @@
                 </tr>
                 <tr>
                     <td><code>git diff &lt;branch_name&gt;</code></td>
-                    <td>Compares different branches before merging.</td>
+                    <td>Compares different branches.</td>
                 </tr>
                 <tr>
                     <td><code>git clone &lt;repo_url&gt;</code></td>
@@ -502,24 +599,28 @@
                     <td><code>git tag</code></td>
                     <td>Tags releases to facilitate versioning.</td>
                 </tr>
+                <tr>
+                    <td><code>git submodule add &lt;repo_url&gt;</code></td>
+                    <td>Adds a Git repository as a submodule.</td>
+                </tr>
             </table>
-            <div class="tip">Use descriptive commit messages to make rollbacks easier.</div>
+            <div class="tip">Use descriptive tags for releases to easily identify versions.</div>
             <div class="tip">Regularly update submodules to ensure all dependencies are in sync.</div>
             <div class="best-practice">
-                <p>• Always test code changes in a staging environment before deploying to production.</p>
-                <p>• Utilize feature branches for new developments to keep the main branch stable.</p>
+                <p>• Always create a merge commit to preserve the context of feature branches.</p>
+                <p>• Test code changes locally before merging into the main branch.</p>
             </div>
         </section>
 
-        <section id="section-7b5ede52" class="section">
+        <section id="section-c03099fe" class="section">
             <h2>Git Integration with CI/CD and Documentation Versioning</h2>
-            <p class="section-meta">Added: 2025-12-03 12:17</p>
-            <p>Git plays a crucial role in CI/CD systems by automating build and deployment processes based on repository changes. Additionally, it is used to version configuration files and documentation, facilitating better management in DevOps environments.</p>
+            <p class="section-meta">Added: 2025-12-03 12:32</p>
+            <p>Git plays a crucial role in CI/CD systems by automating build and deployment processes based on repository changes. It is also used for versioning configuration files and documentation in DevOps practices.</p>
             <h3>Key Points</h3>
             <ul>
-                <li>Git commands can trigger build processes in CI/CD tools.</li>
+                <li>Git triggers build processes in CI/CD tools through specific commands.</li>
                 <li>Versioning of configuration files and documentation is essential in DevOps.</li>
-                <li>Safe force pushing helps maintain collaboration in CI/CD workflows.</li>
+                <li>Safe practices for pushing changes in collaborative environments are important.</li>
             </ul>
             <h3>Commands</h3>
             <table>
@@ -530,15 +631,15 @@
                 </tr>
                 <tr>
                     <td><code>git tag &lt;build_version&gt;</code></td>
-                    <td>Tags a commit with a version number, which might trigger deployment pipelines for testing or production.</td>
+                    <td>Tags a commit with a version number, which might trigger deployment pipelines.</td>
                 </tr>
                 <tr>
                     <td><code>git log --oneline</code></td>
-                    <td>View a condensed log of the commit history to identify the changes associated with a specific build or deployment.</td>
+                    <td>View a condensed log of the commit history.</td>
                 </tr>
                 <tr>
                     <td><code>git push --force-with-lease</code></td>
-                    <td>Pushes changes to a branch with a safer force push, useful when you need to overwrite history in collaborative CI/CD workflows without overwriting someone else’s work.</td>
+                    <td>Pushes changes to a branch with a safer force push.</td>
                 </tr>
                 <tr>
                     <td><code>git add</code></td>
@@ -546,18 +647,18 @@
                 </tr>
                 <tr>
                     <td><code>git commit -m "add/update documentation"</code></td>
-                    <td>Commit changes related to documentation, often used in documentation-driven development.</td>
+                    <td>Commit changes related to documentation.</td>
                 </tr>
                 <tr>
                     <td><code>git diff</code></td>
-                    <td>Compare different versions of documentation files or configuration files, useful when tracking changes in infrastructure or environment files.</td>
+                    <td>Compare different versions of documentation or configuration files.</td>
                 </tr>
             </table>
-            <div class="tip">Use tags to manage different versions of your builds effectively.</div>
-            <div class="tip">Regularly commit documentation changes to keep track of updates.</div>
+            <div class="tip">Use git tags to manage versioning effectively for deployments.</div>
+            <div class="tip">Always review commit history with git log to understand changes before deployment.</div>
             <div class="best-practice">
-                <p>• Always review commit history before pushing changes to avoid conflicts.</p>
-                <p>• Utilize safe force pushing to prevent overwriting others' work in collaborative environments.</p>
+                <p>• Use git push --force-with-lease to avoid overwriting others' work.</p>
+                <p>• Regularly commit documentation updates to keep track of changes.</p>
             </div>
         </section>
 
