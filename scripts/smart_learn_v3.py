@@ -42,7 +42,7 @@ except ImportError:
 
 # Configuration
 CONFIG_PATH = "/Users/abhishtbagewadi/Documents/Scripts/RCA-SCRIPT-2/abhisht_script_github_ready/config/config.yaml"
-REPO_PATH = Path.home() / "DevOps_learning_v2"
+REPO_PATH = Path.home() / "DevOps_learning"
 NOTES_FILE = REPO_PATH / "DevOps_Notes.html"
 
 # Chunk size for large content
