@@ -399,6 +399,78 @@ def list_sections():
     print()
 
 
+def remove_content_from_file(search_text: str, dry_run: bool = False) -> bool:
+    """Search and remove content from DevOps_Notes.html"""
+
+    with open(NOTES_FILE, 'r', encoding='utf-8') as f:
+        content = f.read()
+
+    # Clean up the search text
+    search_text = search_text.strip()
+
+    if len(search_text) < 5:
+        print("❌ Search text too short (min 5 characters)")
+        return False
+
+    # Try exact match first
+    if search_text in content:
+        # Find context around the match
+        pos = content.find(search_text)
+        start = max(0, pos - 100)
+        end = min(len(content), pos + len(search_text) + 100)
+        context = content[start:end]
+
+        print(f"\n🔍 Found match!")
+        print(f"\n{'─' * 50}")
+        print(f"...{context}...")
+        print(f"{'─' * 50}")
+
+        if dry_run:
+            print(f"\n🧪 Dry run - would remove {len(search_text)} characters")
+            return True
+
+        # Remove the content
+        new_content = content.replace(search_text, '')
+
+        # Clean up empty lines
+        new_content = re.sub(r'\n\s*\n\s*\n', '\n\n', new_content)
+
+        with open(NOTES_FILE, 'w', encoding='utf-8') as f:
+            f.write(new_content)
+
+        print(f"\n✅ Removed {len(search_text)} characters")
+
+        # Git commit
+        commit_msg = "🗑️ Remove content from DevOps_Notes.html"
+        if git_commit_and_push(commit_msg):
+            print(f"📤 Pushed to GitHub!")
+        else:
+            print(f"⚠️ Saved locally. Push manually if needed.")
+
+        return True
+    else:
+        # Try fuzzy search - find similar content
+        print(f"\n❌ Exact match not found.")
+        print(f"\n🔍 Searching for similar content...")
+
+        # Search for parts of the text
+        lines = search_text.split('\n')
+        for line in lines[:3]:  # Check first 3 lines
+            line = line.strip()
+            if len(line) > 10 and line in content:
+                pos = content.find(line)
+                start = max(0, pos - 50)
+                end = min(len(content), pos + len(line) + 50)
+                context = content[start:end]
+                print(f"\n📍 Found partial match:")
+                print(f"   ...{context[:100]}...")
+                print(f"\n💡 Try pasting just this specific text to remove it.")
+                return False
+
+        print(f"   No matches found. Make sure the text exists in DevOps_Notes.html")
+        return False
+
+
 def interactive_input() -> str:
     """Get multi-line input"""
     print("\n📝 Paste your content (Ctrl+D when done):\n")
@@ -430,6 +502,8 @@ Examples:
     parser.add_argument('-t', '--topic', help='Target section ID')
     parser.add_argument('-i', '--interactive', action='store_true', help='Paste mode')
     parser.add_argument('--list', action='store_true', help='List sections')
+    parser.add_argument('--search', help='Search notes')
+    parser.add_argument('--remove', action='store_true', help='Remove content')
     parser.add_argument('--dry-run', action='store_true', help='Preview only')
     parser.add_argument('--no-push', action='store_true', help='No git push')
 
@@ -437,6 +511,34 @@ Examples:
 
     if args.list:
         list_sections()
+        return
+
+    # Handle remove mode
+    if args.remove:
+        print("\n🗑️  Remove Content Mode")
+        if sys.stdin.isatty():
+            print("Paste content to remove (Ctrl+D when done):")
+            search_text = sys.stdin.read()
+        else:
+            search_text = sys.stdin.read()
+        remove_content_from_file(search_text, args.dry_run)
+        return
+
+    # Handle search
+    if args.search:
+        with open(NOTES_FILE, 'r', encoding='utf-8') as f:
+            content = f.read()
+        if args.search.lower() in content.lower():
+            print(f"✅ Found '{args.search}' in DevOps_Notes.html")
+            # Show context
+            pos = content.lower().find(args.search.lower())
+            start = max(0, pos - 100)
+            end = min(len(content), pos + 200)
+            print(f"\n{'─' * 50}")
+            print(f"...{content[start:end]}...")
+            print(f"{'─' * 50}")
+        else:
+            print(f"❌ '{args.search}' not found")
         return
 
     # Get content

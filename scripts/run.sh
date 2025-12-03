@@ -37,9 +37,10 @@ show_menu() {
     echo "  4) 📋 Paste content → specific section"
     echo "  5) 🔍 Search existing notes"
     echo "  6) 📚 List all sections"
-    echo "  7) 🧪 Dry run (preview without saving)"
-    echo "  8) ❓ Help"
-    echo "  9) 🚪 Exit"
+    echo "  7) 🗑️  Remove content"
+    echo "  8) 🧪 Dry run (preview without saving)"
+    echo "  9) ❓ Help"
+    echo "  0) 🚪 Exit"
     echo ""
 }
 
@@ -236,6 +237,36 @@ show_help() {
     echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 }
 
+remove_content() {
+    echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${RED}🗑️  Remove Content${NC}"
+    echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo ""
+    echo -e "${YELLOW}Paste the content you want to remove (Ctrl+D when done):${NC}"
+    echo -e "${CYAN}(Paste a unique portion of text - like a heading or code block)${NC}"
+    echo ""
+
+    content_to_remove=$(cat)
+
+    if [ -n "$content_to_remove" ]; then
+        echo ""
+        echo -e "${YELLOW}Preview what will be removed...${NC}"
+        python3 "$PYTHON_SCRIPT" --remove --dry-run <<< "$content_to_remove"
+
+        echo ""
+        echo -e "${RED}Are you sure you want to remove this content? (y/n):${NC}"
+        read -r confirm
+
+        if [ "$confirm" = "y" ] || [ "$confirm" = "Y" ]; then
+            python3 "$PYTHON_SCRIPT" --remove <<< "$content_to_remove"
+        else
+            echo -e "${YELLOW}Cancelled.${NC}"
+        fi
+    else
+        echo -e "${RED}No content provided${NC}"
+    fi
+}
+
 # Check for command line arguments
 if [ $# -gt 0 ]; then
     # Pass all arguments to Python script
@@ -248,7 +279,7 @@ show_banner
 
 while true; do
     show_menu
-    echo -e "${BLUE}Enter choice [1-9]:${NC} "
+    echo -e "${BLUE}Enter choice [0-9]:${NC} "
     read -r choice
     echo ""
 
@@ -259,9 +290,10 @@ while true; do
         4) paste_content_with_section ;;
         5) search_notes ;;
         6) list_sections ;;
-        7) dry_run ;;
-        8) show_help ;;
-        9) echo -e "${GREEN}Goodbye! Happy Learning! 🎓${NC}"; exit 0 ;;
+        7) remove_content ;;
+        8) dry_run ;;
+        9) show_help ;;
+        0) echo -e "${GREEN}Goodbye! Happy Learning! 🎓${NC}"; exit 0 ;;
         *) echo -e "${RED}Invalid option. Please try again.${NC}" ;;
     esac
 
