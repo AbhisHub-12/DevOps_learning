@@ -1237,7 +1237,58 @@ spec:
                         <td><code>kubectl rollout status deployment/app</code></td>
                     </tr>
                 </table>
-            </section>
+            
+                <!-- Added on 2025-12-03 14:54 -->
+<h3>What is Ingress in Kubernetes?</h3>
+<p>Ingress is a Kubernetes API object used to manage external access to services inside the cluster.</p>
+
+<h3>Ingress is used to:</h3>
+<ul>
+    <li>expose HTTP/HTTPS applications</li>
+    <li>route incoming traffic to different services</li>
+    <li>define host-based or path-based routing</li>
+    <li>handle SSL/TLS termination</li>
+</ul>
+
+<p>Ingress acts like a set of rules that tells Kubernetes:</p>
+<div class="tip">👉 “When traffic comes from outside, where should it go?”</div>
+
+<h3>What is an Ingress Controller?</h3>
+<p>An Ingress Controller is the actual implementation that executes the rules defined in the Ingress object.</p>
+<p>Ingress is only a configuration. It does nothing by itself. The Ingress Controller is responsible for processing those rules and routing the traffic.</p>
+
+<h3>Examples of Ingress Controllers:</h3>
+<ul>
+    <li>NGINX Ingress Controller</li>
+    <li>AWS ALB Ingress Controller</li>
+    <li>GKE Ingress</li>
+    <li>Traefik Ingress Controller</li>
+    <li>HAProxy Ingress</li>
+</ul>
+
+<h3>Simple Analogy</h3>
+<p><strong>Ingress:</strong> Think of Ingress as a “traffic rulebook” written on paper.</p>
+<p><strong>Ingress Controller:</strong> Think of the Ingress Controller as the “traffic police” who reads the rulebook and actually controls the traffic.</p>
+
+<h3>Visual Diagram Explanation</h3>
+<p>Internet</p>
+<p>LoadBalancer</p>
+<p>Ingress Controller</p>
+<p>--------------------------------</p>
+<p>/app1 → Service1</p>
+<p>/app2 → Service2</p>
+<p>/admin → Service3</p>
+<p>The Ingress Controller reads these rules and handles routing.</p>
+
+<h3>Summary</h3>
+<table class="command-table">
+    <tr><th>Component</th><th>Meaning</th><th>Responsibility</th></tr>
+    <tr><td>Ingress</td><td>A set of routing rules</td><td>Defines how traffic should flow</td></tr>
+    <tr><td>Ingress Controller</td><td>The engine that applies the rules</td><td>Routes traffic to correct services</td></tr>
+</table>
+
+
+                </section>
             
             <!-- Ingress Section -->
             <section id="ingress" class="section">
