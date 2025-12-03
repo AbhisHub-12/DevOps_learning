@@ -3,80 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevOps Project - AbhisHub-12</title>
+    <title>🚀 DevOps Learning Hub - AbhisHub</title>
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
         }
         .container {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 1200px;
+            margin: 0 auto;
         }
-        h1 {
-            color: #333;
+        .header {
             text-align: center;
-            border-bottom: 3px solid #007acc;
-            padding-bottom: 10px;
+            color: white;
+            margin-bottom: 2rem;
         }
-        .file-links {
+        .header h1 { font-size: 3rem; margin-bottom: 0.5rem; }
+        .header p { font-size: 1.2rem; opacity: 0.9; }
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .topic-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-decoration: none;
+            color: #333;
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            margin-top: 30px;
+            align-items: center;
+            gap: 0.5rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-left: 4px solid;
         }
+        .topic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .topic-icon { font-size: 2.5rem; }
+        .topic-name { font-weight: 600; text-align: center; }
+        .legacy-section {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        .legacy-section h2 { color: #333; margin-bottom: 1rem; }
         .file-link {
             display: block;
-            padding: 15px 20px;
-            background: linear-gradient(135deg, #007acc, #005a9e);
-            color: white;
+            padding: 0.75rem 1rem;
+            background: #f7fafc;
+            color: #333;
             text-decoration: none;
             border-radius: 8px;
-            transition: transform 0.2s, box-shadow 0.2s;
-            text-align: center;
-            font-weight: bold;
+            margin-bottom: 0.5rem;
+            transition: background 0.2s;
         }
-        .file-link:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0,122,204,0.3);
-        }
-        .description {
-            text-align: center;
-            color: #666;
-            margin: 20px 0;
-            font-size: 18px;
-        }
+        .file-link:hover { background: #edf2f7; }
         .footer {
-            margin-top: 40px;
             text-align: center;
-            color: #888;
-            font-size: 14px;
+            color: white;
+            margin-top: 2rem;
+            opacity: 0.8;
+        }
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1rem 0;
+        }
+        .stat {
+            background: rgba(255,255,255,0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            color: white;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🚀 DevOps Project</h1>
-        <p class="description">Welcome to my DevOps learning resources!</p>
-        
-        <div class="file-links">
-            <a href="DevOps_Notes.html" class="file-link">
-                📚 DevOps Notes
-            </a>
-            <a href="Devops_flow_chart.html" class="file-link">
-                📊 DevOps Flow Chart
-            </a>
+        <div class="header">
+            <h1>🚀 DevOps Learning Hub</h1>
+            <p>Personal knowledge base for DevOps, Cloud & Automation</p>
+            <div class="stats">
+                <span class="stat">📚 1 Topics</span>
+                <span class="stat">📅 Updated: 2025-12-03</span>
+            </div>
         </div>
-        
+
+        <div class="topics-grid">
+
+            <a href="topics/linux.html" class="topic-card" style="border-color: #fcc624">
+                <span class="topic-icon">🐧</span>
+                <span class="topic-name">Linux</span>
+            </a>
+
+        </div>
+
+        <div class="legacy-section">
+            <h2>📁 Original Notes</h2>
+
+            <a href="DevOps_Notes.html" class="file-link">📄 Devops Notes</a>
+
+            <a href="Devops_flow_chart.html" class="file-link">📄 Devops Flow Chart</a>
+
+        </div>
+
         <div class="footer">
-            <p>Created by AbhisHub-12 | Hosted on GitHub Pages</p>
+            <p>Created by AbhisHub-12 | Powered by AI Learning Assistant</p>
         </div>
     </div>
 </body>
 </html>
-
