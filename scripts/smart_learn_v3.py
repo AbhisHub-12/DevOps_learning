@@ -57,12 +57,77 @@ REPO_PATH = Path.home() / "DevOps_learning"
 NOTES_FILE = REPO_PATH / "DevOps_Notes.html"
 CREDENTIALS_FILE = REPO_PATH / "scripts" / "credentials.json"
 TOKEN_FILE = REPO_PATH / "scripts" / "token.json"
+HISTORY_FILE = REPO_PATH / "scripts" / "upload_history.json"
 
 # Google Drive folder ID
 DRIVE_FOLDER_ID = "1sO9ONt5MDsvVvv9AOyBlXKPjaGCvCehb"
 
 # Chunk size for large content
 CHUNK_SIZE = 6000
+
+
+def get_content_hash(content: str) -> str:
+    """Generate hash of content for duplicate detection"""
+    import hashlib
+    return hashlib.md5(content.encode()).hexdigest()
+
+
+def load_upload_history() -> dict:
+    """Load history of uploaded files"""
+    if HISTORY_FILE.exists():
+        with open(HISTORY_FILE, 'r') as f:
+            return json.load(f)
+    return {"files": {}, "hashes": []}
+
+
+def save_upload_history(history: dict):
+    """Save upload history"""
+    with open(HISTORY_FILE, 'w') as f:
+        json.dump(history, f, indent=2)
+
+
+def check_duplicate(file_path: str = None, content: str = None) -> tuple:
+    """
+    Check if file or content is duplicate
+    Returns: (is_duplicate: bool, reason: str)
+    """
+    history = load_upload_history()
+
+    # Check by filename
+    if file_path:
+        filename = Path(file_path).name
+        if filename in history.get("files", {}):
+            prev_upload = history["files"][filename]
+            return True, f"File '{filename}' was already uploaded on {prev_upload['date']} to section '{prev_upload['section']}'"
+
+    # Check by content hash
+    if content:
+        content_hash = get_content_hash(content[:10000])  # Hash first 10k chars
+        if content_hash in history.get("hashes", []):
+            return True, "Similar content was already uploaded"
+
+    return False, ""
+
+
+def record_upload(file_path: str, section: str, content: str):
+    """Record successful upload to history"""
+    history = load_upload_history()
+
+    if file_path:
+        filename = Path(file_path).name
+        history.setdefault("files", {})[filename] = {
+            "date": datetime.now().strftime("%Y-%m-%d %H:%M"),
+            "section": section,
+            "path": file_path
+        }
+
+    if content:
+        content_hash = get_content_hash(content[:10000])
+        history.setdefault("hashes", [])
+        if content_hash not in history["hashes"]:
+            history["hashes"].append(content_hash)
+
+    save_upload_history(history)
 
 # Google Drive Scopes
 SCOPES = ['https://www.googleapis.com/auth/drive.file']
@@ -680,6 +745,7 @@ Examples:
     parser.add_argument('--remove', action='store_true', help='Remove content')
     parser.add_argument('--dry-run', action='store_true', help='Preview only')
     parser.add_argument('--no-push', action='store_true', help='No git push')
+    parser.add_argument('--force', action='store_true', help='Force upload even if duplicate')
 
     args = parser.parse_args()
 
@@ -741,6 +807,15 @@ Examples:
         print("❌ Content too short")
         sys.exit(1)
 
+    # Check for duplicates
+    is_duplicate, reason = check_duplicate(file_path_for_upload, content)
+    if is_duplicate and not args.dry_run:
+        print(f"\n⚠️  DUPLICATE DETECTED!")
+        print(f"   {reason}")
+        print(f"\n   Use --force to upload anyway")
+        if not hasattr(args, 'force') or not args.force:
+            sys.exit(0)
+
     print(f"\n🤖 Initializing AI...")
     client = get_openai_client()
 
@@ -792,6 +867,9 @@ Examples:
 
     if success:
         print(f"   ✅ Content added successfully!")
+
+        # Record upload to prevent duplicates
+        record_upload(file_path_for_upload, section_id, content)
 
         # Git commit and push
         commit_msg = f"📚 Add to {section_name} (from {source})"

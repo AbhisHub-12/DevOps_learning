@@ -2,3 +2,4 @@
 # Google Drive credentials (keep secret)
 scripts/credentials.json
 scripts/token.json
+scripts/upload_history.json
