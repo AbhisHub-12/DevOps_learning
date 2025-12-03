@@ -1288,6 +1288,790 @@ spec:
 </table>
 
 
+                
+                <!-- Added on 2025-12-03 16:05 -->
+
+                <div class="source-link" style="background: #e3f2fd; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+                    📎 <strong>Source:</strong> <a href="https://drive.google.com/file/d/1Th3s1C9D85lwmkPcXXg6AfdngI3SWnx6/view?usp=drivesdk" target="_blank" style="color: #1976d2;">Kubernetes-Cheatsheet.pdf.pdf</a>
+                </div>
+<h3>Basic Cluster Commands</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">kubectl version</div></td><td>Show client + server K8s version.</td></tr>
+    <tr><td><div class="command-box">kubectl cluster-info</div></td><td>See cluster master & DNS info.</td></tr>
+    <tr><td><div class="command-box">kubectl get all</div></td><td>List all resources (pods, svc, deployments, etc.) in default namespace.</td></tr>
+</table>
+
+<h3>Working With Contexts</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">kubectl config get-contexts</div></td><td>List all contexts (clusters).</td></tr>
+    <tr><td><div class="command-box">kubectl config use-context dev</div></td><td>Switch to another cluster.</td></tr>
+    <tr><td><div class="command-box">kubectl config current-context</div></td><td>Show which cluster you are using.</td></tr>
+</table>
+
+<h3>Namespaces</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">kubectl get namespaces</div></td><td>List namespaces.</td></tr>
+    <tr><td><div class="command-box">kubectl create namespace dev</div></td><td>Create namespace.</td></tr>
+    <tr><td><div class="command-box">kubectl delete namespace dev</div></td><td>Delete namespace.</td></tr>
+    <tr><td><div class="command-box">kubectl config set-context --current --namespace=dev</div></td><td>Set default namespace.</td></tr>
+</table>
+
+<h3>Pods</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">kubectl get pods</div></td><td>List pods.</td></tr>
+    <tr><td><div class="command-box">kubectl get pods -o wide</div></td><td>Show pod IP, node, etc.</td></tr>
+    <tr><td><div class="command-box">kubectl describe pod pod-name</div></td><td>Detailed pod info & events.</td></tr>
+    <tr><td><div class="command-box">kubectl logs pod-name</div></td><td>View logs.</td></tr>
+    <tr><td><div class="command-box">kubectl logs -f pod-name</div></td><td>Follow live logs.</td></tr>
+    <tr><td><div class="command-box">kubectl exec -it pod-name -- bash</div></td><td>Enter pod terminal.</td></tr>
+    <tr><td><div class="command-box">kubectl delete pod pod-name</div></td><td>Delete a pod.</td></tr>
+</table>
+
+<h3>Deployments</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">kubectl get deployments</div></td><td>List deployments.</td></tr>
+    <tr><td><div class="command-box">kubectl create deployment web --image=nginx</div></td><td>Create deployment.</td></tr>
+    <tr><td><div class="command-box">kubectl scale deployment web --replicas=5</div></td><td>Scale number of pods.</td></tr>
+    <tr><td><div class="command-box">kubectl rollout status deployment/web</div></td><td>Check deployment rollout status.</td></tr>
+    <tr><td><div class="command-box">kubectl rollout undo deployment/web</div></td><td>Rollback to previous version.</td></tr>
+    <tr><td><div class="command-box">kubectl delete deployment web</div></td><td>Delete deployment.</td></tr>
+</table>
+
+<h3>ReplicaSets</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">kubectl get rs</div></td><td>List ReplicaSets.</td></tr>
+    <tr><td><div class="command-box">kubectl describe rs rs-name</div></td><td>ReplicaSet details.</td></tr>
+</table>
+
+<h3>Services</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">kubectl get svc</div></td><td>List services.</td></tr>
+    <tr><td><div class="command-box">kubectl expose deployment web --type=NodePort --port=80</div></td><td>Expose deployment as a service.</td></tr>
+    <tr><td><div class="command-box">kubectl describe svc web</div></td><td>Service details.</td></tr>
+    <tr><td><div class="command-box">kubectl get svc -o wide</div></td><td>See service cluster IP & ports.</td></tr>
+</table>
+
+<h3>ConfigMaps</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">kubectl create configmap app-config --from-literal=env=prod</div></td><td>Create ConfigMap.</td></tr>
+    <tr><td><div class="command-box">kubectl create configmap myconfig --from-file=config.properties</div></td><td>Create from file.</td></tr>
+    <tr><td><div class="command-box">kubectl get configmaps</div></td><td>List ConfigMaps.</td></tr>
+    <tr><td><div class="command-box">kubectl describe configmap app-config</div></td><td>View config details.</td></tr>
+</table>
+
+<h3>Secrets</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">kubectl create secret generic db-secret --from-literal=password=1234</div></td><td>Create secret.</td></tr>
+    <tr><td><div class="command-box">kubectl create secret generic tls-secret --from-file=server.crt --from-file=server.key</div></td><td>Create TLS secret.</td></tr>
+    <tr><td><div class="command-box">kubectl get secrets</div></td><td>List secrets.</td></tr>
+    <tr><td><div class="command-box">kubectl describe secret db-secret</div></td><td>Describe secret.</td></tr>
+</table>
+
+<h3>YAML Apply, Update & Delete</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">kubectl apply -f deployment.yaml</div></td><td>Apply or update resource.</td></tr>
+    <tr><td><div class="command-box">kubectl delete -f deployment.yaml</div></td><td>Delete resource.</td></tr>
+    <tr><td><div class="command-box">kubectl edit deployment web</div></td><td>Edit resource live in editor.</td></tr>
+</table>
+
+<h3>Nodes & Cluster Info</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">kubectl get nodes</div></td><td>List nodes.</td></tr>
+    <tr><td><div class="command-box">kubectl get nodes -o wide</div></td><td>Node details (OS, internal IP).</td></tr>
+    <tr><td><div class="command-box">kubectl describe node node1</div></td><td>Node details (taints, capacity).</td></tr>
+    <tr><td><div class="command-box">kubectl drain node1 --ignore-daemonsets</div></td><td>Drain node safely.</td></tr>
+    <tr><td><div class="command-box">kubectl cordon node1</div></td><td>Mark node unschedulable.</td></tr>
+    <tr><td><div class="command-box">kubectl uncordon node1</div></td><td>Mark node schedulable.</td></tr>
+</table>
+
+<h3>Resource Usage</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">kubectl top pods</div></td><td>CPU & memory usage of pods.</td></tr>
+    <tr><td><div class="command-box">kubectl top nodes</div></td><td>CPU & memory usage of nodes. (Metrics server required)</td></tr>
+</table>
+
+<h3>Taints & Tolerations</h3>
+<p>Add taint:</p>
+<div class="command-box">kubectl taint nodes node1 key=value:NoSchedule</div>
+<p>Remove taint:</p>
+<div class="command-box">kubectl taint nodes node1 key=value:NoSchedule-</div>
+<p>Used for:</p>
+<ul>
+    <li>Dedicate nodes</li>
+    <li>Restrict workloads</li>
+    <li>Isolation</li>
+</ul>
+
+<h3>Labels & Selectors</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">kubectl label pod web app=frontend</div></td><td>Add label.</td></tr>
+    <tr><td><div class="command-box">kubectl get pods -l app=frontend</div></td><td>Filter with label.</td></tr>
+    <tr><td><div class="command-box">kubectl label pod web app-</div></td><td>Remove label.</td></tr>
+</table>
+
+<h3>Port Forwarding</h3>
+<div class="command-box">kubectl port-forward pod/mypod 8080:80</div>
+<p>Access pod locally. Common for debugging APIs.</p>
+
+<h3>Ingress</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">kubectl get ingress</div></td><td>List ingress rules.</td></tr>
+    <tr><td><div class="command-box">kubectl describe ingress my-ingress</div></td><td>Ingress details.</td></tr>
+</table>
+
+<h3>StatefulSets</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">kubectl get statefulsets</div></td><td>List StatefulSets.</td></tr>
+    <tr><td><div class="command-box">kubectl describe statefulset mysql</div></td><td>Stateful app details.</td></tr>
+</table>
+<p>Used for:</p>
+<ul>
+    <li>Databases</li>
+    <li>Kafka</li>
+    <li>ElasticSearch</li>
+</ul>
+
+<h3>DaemonSets</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">kubectl get daemonsets</div></td><td>List DaemonSets.</td></tr>
+</table>
+<p>Used for:</p>
+<ul>
+    <li>Logging agents</li>
+    <li>Monitoring agents</li>
+</ul>
+
+<h3>Jobs & CronJobs</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">kubectl create job myjob --image=busybox</div></td><td>Create Job.</td></tr>
+    <tr><td><div class="command-box">kubectl create cronjob backup --image=busybox --schedule="*/5 * * * *"</div></td><td>Create CronJob.</td></tr>
+    <tr><td><div class="command-box">kubectl get jobs</div></td><td>List jobs.</td></tr>
+    <tr><td><div class="command-box">kubectl get cronjobs</div></td><td>List CronJobs.</td></tr>
+</table>
+
+<h3>Pod Debugging</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">kubectl describe pod web</div></td><td>Check events.</td></tr>
+    <tr><td><div class="command-box">kubectl logs pod --previous</div></td><td>Check logs of crashed container.</td></tr>
+    <tr><td><div class="command-box">kubectl exec -it web -- sh</div></td><td>Debug inside pod.</td></tr>
+    <tr><td><div class="command-box">kubectl get pod web -o yaml</div></td><td>View complete pod spec.</td></tr>
+</table>
+
+<h3>Troubleshooting Cluster</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">kubectl get events</div></td><td>Cluster-wide events.</td></tr>
+    <tr><td><div class="command-box">kubectl get endpoints</div></td><td>Check service endpoints.</td></tr>
+    <tr><td><div class="command-box">kubectl get componentstatus</div></td><td>Master component status (older K8s).</td></tr>
+    <tr><td><div class="command-box">kubectl get networkpolicies</div></td><td>Check network restrictions.</td></tr>
+</table>
+
+<h3>Network Policies</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">kubectl get netpol</div></td><td>List policies.</td></tr>
+    <tr><td><div class="command-box">kubectl describe netpol</div></td><td>Network policy details.</td></tr>
+</table>
+<p>Used for:</p>
+<ul>
+    <li>Restrict pod-to-pod communication</li>
+    <li>Zero-trust networking</li>
+</ul>
+
+<h3>Storage</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">kubectl get pv</div></td><td>List persistent volumes.</td></tr>
+    <tr><td><div class="command-box">kubectl get pvc</div></td><td>List persistent volume claims.</td></tr>
+    <tr><td><div class="command-box">kubectl describe pv pv-name</div></td><td>PV details.</td></tr>
+    <tr><td><div class="command-box">kubectl describe pvc pvc-name</div></td><td>PVC details.</td></tr>
+</table>
+
+<h3>Service Accounts & RBAC</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">kubectl get serviceaccounts</div></td><td>List service accounts.</td></tr>
+    <tr><td><div class="command-box">kubectl create serviceaccount dev-sa</div></td><td>Create SA.</td></tr>
+    <tr><td><div class="command-box">kubectl get clusterrole</div></td><td>List cluster roles.</td></tr>
+    <tr><td><div class="command-box">kubectl get clusterrolebinding</div></td><td>List bindings.</td></tr>
+</table>
+<p>Used for:</p>
+<ul>
+    <li>Access control</li>
+    <li>Least privilege</li>
+    <li>Pod-to-AWS auth (IRSA)</li>
+</ul>
+
+<h3>Deleting Everything</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">kubectl delete all --all</div></td><td>Delete pods, svc, deployments in namespace.</td></tr>
+    <tr><td><div class="command-box">kubectl delete namespace dev</div></td><td>Delete entire namespace.</td></tr>
+</table>
+
+<h3>Useful Shortcuts</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><div class="command-box">kubectl get po</div></td><td>Short for pods.</td></tr>
+    <tr><td><div class="command-box">kubectl get deploy</div></td><td>Short for deployments.</td></tr>
+    <tr><td><div class="command-box">kubectl get svc</div></td><td>Short for service.</td></tr>
+    <tr><td><div class="command-box">kubectl get ing</div></td><td>Short for ingress.</td></tr>
+    <tr><td><div class="command-box">kubectl get cm</div></td><td>Short for configmap.</td></tr>
+    <tr><td><div class="command-box">kubectl get no</div></td><td>Short for nodes.</td></tr>
+</table>
+
+<h3>Apply with Dry Run (very important)</h3>
+<div class="command-box">kubectl apply -f app.yaml --dry-run=client</div>
+<p>Check if YAML is valid without applying.</p>
+
+<h3>28. Debugging Node Issues</h3>
+<div class="command-box">
+# Check taints, disk pressure, memory pressure.
+kubectl describe node node1
+</div>
+<div class="command-box">
+kubectl get nodes -o json | jq '.items[].status.conditions'
+</div>
+<p>Detailed node conditions.</p>
+
+<h3>29. Extract Pod YAML</h3>
+<div class="command-box">
+# Export pod definition.
+kubectl get pod web -o yaml > pod.yaml
+</div>
+<p>Useful for reproducing or modifying pods.</p>
+
+<h3>30. Kubernetes API Access</h3>
+<div class="command-box">
+# Start API server proxy for debugging.
+kubectl proxy
+</div>
+
+<h3>31. Advanced Pod Debugging</h3>
+<div class="command-box">
+# Exec into a specific container inside a multi-container pod.
+kubectl exec -it pod --container app -- sh
+</div>
+<div class="command-box">
+# View logs of a specific container.
+kubectl logs pod -c app
+</div>
+<div class="command-box">
+# Check logs of a container that crashed.
+kubectl logs pod --previous
+</div>
+<div class="command-box">
+# Search for errors in pod events.
+kubectl describe pod pod | grep -i error
+</div>
+
+<h3>32. Ephemeral Debug Container (K8s 1.23+)</h3>
+<div class="command-box">
+# Attach a temporary debug container.
+kubectl debug podname -it --image=busybox
+</div>
+<div class="command-box">
+# Debug an entire node.
+kubectl debug node/node1 -it --image=busybox
+</div>
+<p>Used for:</p>
+<ul>
+    <li>CrashLoopBackOff</li>
+    <li>ImagePullBackOff</li>
+    <li>Node-level debugging</li>
+</ul>
+
+<h3>33. ImagePull & Crash Issues</h3>
+<div class="command-box">
+# Get reason for failed pod.
+kubectl get pod pod -o jsonpath='{.status.containerStatuses[].state.waiting.reason}'
+</div>
+<p>Common issues:</p>
+<ul>
+    <li>ImagePullBackOff</li>
+    <li>ErrImagePull</li>
+    <li>CrashLoopBackOff</li>
+</ul>
+
+<h3>34. Rollouts & History</h3>
+<div class="command-box">
+# View deployment history.
+kubectl rollout history deployment web
+</div>
+<div class="command-box">
+# Rollback to a specific version.
+kubectl rollout undo deployment web --to-revision=2
+</div>
+<div class="command-box">
+# Pause rollout (for debugging).
+kubectl rollout pause deployment web
+</div>
+<div class="command-box">
+# Resume rollout.
+kubectl rollout resume deployment web
+</div>
+
+<h3>35. Advanced Scaling</h3>
+<div class="command-box">
+# Scale down to zero.
+kubectl scale deployment web --replicas=0
+</div>
+<div class="command-box">
+# Scale StatefulSet (ordered).
+kubectl scale statefulset mysql --replicas=3
+</div>
+
+<h3>36. YAML Dry Run & Diff</h3>
+<div class="command-box">
+# Show changes before applying.
+kubectl diff -f app.yaml
+</div>
+<div class="command-box">
+# Server-side validation without apply.
+kubectl apply -f app.yaml --dry-run=server
+</div>
+<p>Useful for CI/CD pipelines.</p>
+
+<h3>37. Patching (Very Important for DevOps)</h3>
+<div class="command-box">
+# Patch resources inline:
+kubectl patch deployment web -p '{"spec": {"replicas": 4}}'
+</div>
+<div class="command-box">
+# Patch with strategic merge:
+kubectl patch svc web --patch-file patch.yaml
+</div>
+<p>Used for:</p>
+<ul>
+    <li>Hotfixes</li>
+    <li>On-the-fly changes</li>
+    <li>CI/CD automation</li>
+</ul>
+
+<h3>38. Node Health & Troubleshooting</h3>
+<div class="command-box">
+# Find unhealthy nodes.
+kubectl get nodes -o json | jq '.items[].status.conditions[] | select(.status=="False")'
+</div>
+<div class="command-box">
+# Check disk pressure, memory pressure.
+kubectl describe node node1
+</div>
+<div class="command-box">
+# List all pods on a node.
+kubectl get pods --all-namespaces -o wide --field-selector spec.nodeName=node1
+</div>
+
+<h3>39. Events & Cluster-level Issues</h3>
+<div class="command-box">
+# Show all events.
+kubectl get events
+</div>
+<div class="command-box">
+# Sort events by time.
+kubectl get events --sort-by='.lastTimestamp'
+</div>
+<div class="command-box">
+# Access kube-apiserver metrics.
+kubectl get --raw /metrics
+</div>
+
+<h3>40. Service Debugging</h3>
+<div class="command-box">
+# Check if service has endpoints.
+kubectl get endpoints web
+</div>
+<div class="command-box">
+# Check wrong targetPort / selector.
+kubectl describe svc web
+</div>
+<div class="command-box">
+# Test service connectivity.
+kubectl run test --image=busybox -it --rm -- wget web
+</div>
+
+<h3>41. Ingress Debugging</h3>
+<div class="command-box">
+# List ingress.
+kubectl get ingress
+</div>
+<div class="command-box">
+# Check rules & events.
+kubectl describe ingress web-ingress
+</div>
+<div class="command-box">
+# Check ingress controller health.
+kubectl get pods -n ingress-nginx
+</div>
+
+<h3>42. Network Policy Debugging</h3>
+<div class="command-box">
+# List network policies.
+kubectl get netpol
+</div>
+<div class="command-box">
+# View network rules.
+kubectl describe netpol allow-app
+</div>
+<div class="command-box">
+# Test connectivity:
+kubectl run test --rm -it --image=busybox -- wget http://pod-ip
+</div>
+
+<h3>43. Persistent Storage Commands</h3>
+<div class="command-box">
+# List storage classes.
+kubectl get storageclass
+</div>
+<div class="command-box">
+# Details of storage class.
+kubectl describe storageclass gp2
+</div>
+<div class="command-box">
+# List persistent volumes.
+kubectl get pv
+</div>
+<div class="command-box">
+# List persistent volume claims.
+kubectl get pvc
+</div>
+<div class="command-box">
+# PVC status.
+kubectl describe pvc my-pvc
+</div>
+
+<h3>44. Logs & Audit</h3>
+<div class="command-box">
+# Logs from the last 1 hour.
+kubectl logs pod --since=1h
+</div>
+<div class="command-box">
+# Show last 50 lines.
+kubectl logs pod --tail=50
+</div>
+<div class="command-box">
+# Show logs with timestamps.
+kubectl logs pod --timestamps
+</div>
+
+<h3>45. Node-to-Pod Debugging</h3>
+<div class="command-box">
+# Test pod connectivity.
+kubectl run debug --rm -it --image=busybox --command -- ping <pod-ip>
+</div>
+<div class="command-box">
+# Find pod IP.
+kubectl get pod -o wide
+</div>
+
+<h3>46. Copy Files To & From Pod</h3>
+<div class="command-box">
+# Copy from pod → local.
+kubectl cp pod:/app/logs ./logs
+</div>
+<div class="command-box">
+# Copy local → pod.
+kubectl cp file.txt pod:/app/
+</div>
+
+<h3>47. ConfigMaps & Secrets Debugging</h3>
+<div class="command-box">
+# View ConfigMap values.
+kubectl get configmaps -o yaml
+</div>
+<div class="command-box">
+# Base64 encoded output.
+kubectl get secret db-secret -o yaml
+</div>
+<div class="command-box">
+# Decode:
+echo 'cGFzc3dvcmQ=' | base64 --decode
+</div>
+
+<h3>48. K8s Useful JSONPath Queries</h3>
+<div class="command-box">
+# Get pod image:
+kubectl get pod web -o jsonpath='{.spec.containers[*].image}'
+</div>
+<div class="command-box">
+# Get pod node:
+kubectl get pod web -o jsonpath='{.spec.nodeName}'
+</div>
+
+<h3>49. Resource Quotas & Limits</h3>
+<div class="command-box">
+# List quotas.
+kubectl get resourcequota
+</div>
+<div class="command-box">
+# Quota details.
+kubectl describe resourcequota rq1
+</div>
+
+<h3>50. LimitRanges</h3>
+<div class="command-box">
+# List pod limit ranges.
+kubectl get limitrange
+</div>
+<p>Used for:</p>
+<ul>
+    <li>default CPU/memory</li>
+    <li>maximum/minimum allowed resources</li>
+</ul>
+
+<h3>51. Service Account with Pod</h3>
+<div class="command-box">
+# Show token & secrets.
+kubectl describe sa my-sa
+</div>
+<div class="command-box">
+# Check which service account pod uses.
+kubectl describe pod pod | grep ServiceAccount
+</div>
+
+<h3>52. RBAC Debugging</h3>
+<div class="command-box">
+# Test user permission:
+kubectl auth can-i get pods --as user1
+</div>
+<div class="command-box">
+# Test namespace-specific permission:
+kubectl auth can-i delete pods -n dev
+</div>
+
+<h3>53. Port & Connectivity Debugging (Must Know)</h3>
+<div class="command-box">
+# Test port:
+kubectl run test --rm -it --image=busybox -- nc -zv web 80
+</div>
+<div class="command-box">
+# DNS check:
+kubectl run test --rm -it --image=busybox -- nslookup web
+</div>
+
+<h3>54. Horizontal Pod Autoscaling</h3>
+<div class="command-box">
+# Create autoscaler.
+kubectl autoscale deployment web --cpu-percent=50 --min=2 --max=10
+</div>
+<div class="command-box">
+# List HPAs.
+kubectl get hpa
+</div>
+
+<h3>Cluster Autoscaler Debugging</h3>
+<div class="command-box">
+# Check autoscaler pod.
+kubectl -n kube-system get pods | grep autoscaler
+</div>
+
+<h3>Advanced Resource Filtering (field selectors)</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><code>kubectl get pods --field-selector spec.nodeName=node1</code></td><td>Get pods scheduled on a specific node</td></tr>
+    <tr><td><code>kubectl get pods --field-selector=status.phase=Failed</code></td><td>Get pods that failed</td></tr>
+    <tr><td><code>kubectl get pods --field-selector=status.phase!=Running</code></td><td>Get pods that are not running</td></tr>
+    <tr><td><code>kubectl get pods --sort-by=.metadata.creationTimestamp</code></td><td>Get pods created in last 5 minutes</td></tr>
+</table>
+
+<h3>Advance JSON & YAML Output Formatting</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><code>kubectl get pods -o jsonpath='{.items[*].metadata.name}'</code></td><td>Get only pod names</td></tr>
+    <tr><td><code>kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="InternalIP")].address}'</code></td><td>Get node internal IPs</td></tr>
+    <tr><td><code>kubectl get pods -o jsonpath='{.items[*].spec.containers[*].image}'</code></td><td>Get pod image names</td></tr>
+</table>
+
+<h3>Temporary BusyBox Pod (for debugging)</h3>
+<div class="command-box">
+# Used for DNS testing, connecting to services, checking network restrictions
+kubectl run tmp --rm -it --image=busybox -- sh
+</div>
+
+<h3>Check Pod Events Script</h3>
+<div class="command-box">
+# Helpful command to sort events
+kubectl get events --sort-by='.lastTimestamp'
+</div>
+<div class="best-practice">Best for: CrashLoopBackOff, Pod scheduling failure, Image pull issues</div>
+
+<h3>Get Pod Environment Variables</h3>
+<div class="command-box">
+kubectl exec -it <pod> -- printenv
+</div>
+<div class="command-box">
+kubectl get pod <pod> -o jsonpath='{.spec.containers[*].env}'
+</div>
+
+<h3>Debugging Service DNS</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><code>kubectl run dns-test --rm -it --image=busybox -- nslookup svc-name</code></td><td>Test DNS resolution</td></tr>
+    <tr><td><code>kubectl run dns-test --rm -it --image=busybox -- nslookup kubernetes.default</code></td><td>Test cluster DNS</td></tr>
+</table>
+
+<h3>Debug Service Connectivity</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><code>kubectl run test --rm -it --image=busybox -- nc -zv svc-name 80</code></td><td>Test port connectivity</td></tr>
+    <tr><td><code>kubectl run test --rm -it --image=curlimages/curl -- curl http://svc-name</code></td><td>Test via curl</td></tr>
+</table>
+
+<h3>Debug Node Ports</h3>
+<div class="command-box">
+curl <node-ip>:<node-port>
+</div>
+
+<h3>Pod Security / User Permissions</h3>
+<div class="command-box">
+kubectl get pod pod -o jsonpath='{.spec.containers[*].securityContext.runAsUser}'
+</div>
+
+<h3>Copy Kubernetes Manifest From Live Resource</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><code>kubectl get deploy web -o yaml > web.yaml</code></td><td>Extract current running deployment YAML</td></tr>
+    <tr><td><code>kubectl get cm app-config -o yaml > configmap.yaml</code></td><td>Extract current configmap YAML</td></tr>
+</table>
+
+<h3>Validating YAML</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><code>kubectl apply -f app.yaml --dry-run=client</code></td><td>Client-side validation</td></tr>
+    <tr><td><code>kubectl apply -f app.yaml --dry-run=server</code></td><td>Server-side validation</td></tr>
+    <tr><td><code>kubeval app.yaml</code></td><td>Lint YAML (if installed)</td></tr>
+</table>
+
+<h3>Kubernetes API Access (Raw)</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><code>kubectl get --raw /metrics</code></td><td>View cluster components metrics</td></tr>
+    <tr><td><code>kubectl get --raw /api</code></td><td>Access API paths</td></tr>
+</table>
+
+<h3>Node Disk / Memory Pressure Debugging</h3>
+<div class="command-box">
+kubectl describe node node1 | grep -i pressure
+</div>
+<p>Look for:</p>
+<ul>
+    <li>DiskPressure</li>
+    <li>MemoryPressure</li>
+    <li>PIDPressure</li>
+</ul>
+
+<h3>Node Logs (Master & Worker Debugging)</h3>
+<ul>
+    <li><div class="command-box">journalctl -u kubelet -f</div></li>
+    <li><div class="command-box">journalctl -u containerd -f</div></li>
+</ul>
+
+<h3>Restarting Pods Properly</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><code>kubectl delete pod pod-name</code></td><td>Delete pod safely (deployment recreates it)</td></tr>
+    <tr><td><code>kubectl delete pod pod-name --force --grace-period=0</code></td><td>Force delete stuck pod</td></tr>
+</table>
+
+<h3>Restart Deployment (Without Editing)</h3>
+<div class="command-box">
+kubectl rollout restart deployment web
+</div>
+
+<h3>Checking Cluster Authentication</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><code>kubectl auth can-i create pods</code></td><td>Test if user can perform action</td></tr>
+    <tr><td><code>kubectl auth can-i delete pods --as bob</code></td><td>Test as specific user</td></tr>
+</table>
+
+<h3>Get Logs From ALL Pods of a Deployment</h3>
+<div class="command-box">
+kubectl logs -l app=web --all-containers=true
+</div>
+<div class="tip">Labels must match deployment selector.</div>
+
+<h3>Debugging Network Policies</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><code>kubectl get netpol</code></td><td>List policies</td></tr>
+    <tr><td><code>kubectl run test --rm -it --image=busybox -- sh</code></td><td>Connectivity test across namespaces</td></tr>
+</table>
+<p>Inside:</p>
+<div class="command-box">
+wget http://pod-ip
+</div>
+
+<h3>ConfigMap Reload Troubleshooting</h3>
+<div class="tip">Pods do NOT automatically reload ConfigMaps unless:</div>
+<ul>
+    <li>Pod restarts</li>
+    <li>Sidecar reloaders (e.g., Reloader, ConfigMap reloader)</li>
+    <li>Using projected volumes</li>
+</ul>
+<div class="command-box">
+kubectl get pod pod -o jsonpath='{.spec.volumes[*].configMap.name}'
+</div>
+
+<h3>Secret Decoding & Validation</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><code>echo 'cGFzc3dvcmQ=' | base64 --decode</code></td><td>Decode a secret</td></tr>
+    <tr><td><code>echo -n 'mypassword' | base64</code></td><td>Encode new value</td></tr>
+</table>
+
+<h3>Checking Pod Storage Paths</h3>
+<table class="command-table">
+    <tr><th>Command</th><th>Description</th></tr>
+    <tr><td><code>kubectl get pod pod -o jsonpath='{.spec.volumes}'</code></td><td>Check mounted volumes</td></tr>
+    <tr><td><code>kubectl get pod pod -o jsonpath='{.spec.containers[*].volumeMounts}'</code></td><td>Check volume mount path</td></tr>
+</table>
+
+<h3>Live Pod Debug Session</h3>
+<div class="command-box">
+kubectl debug --image=busybox pod-name
+</div>
+<p>This creates a temporary container INSIDE pod for debugging.</p>
+
+<h3>Upgrade Kubernetes Without Downtime (Cluster Admin)</h3>
+<p>Check nodes before upgrade:</p>
+<div class="command-box">
+kubectl get nodes
+</div>
+<p>Upgrade node one-by-one:</p>
+<div class="command-box">
+kubectl drain node1 --ignore-daemonsets
+</div>
+<p>Then update node OS/Kubelet.</p>
+<div class="command-box">
+kubectl uncordon node1
+</div>
+
+<h3>Advanced kube-proxy Debugging</h3>
+<ul>
+    <li><div class="command-box">iptables -L -t nat</div></li>
+    <li><div class="command-box">journalctl -u kube-proxy -f</div></li>
+</ul>
+
+
                 </section>
             
             <!-- Ingress Section -->
