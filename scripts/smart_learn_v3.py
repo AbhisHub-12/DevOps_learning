@@ -72,23 +72,85 @@ def get_openai_client() -> OpenAI:
 
 
 def extract_pdf_content(file_path: str) -> str:
-    """Extract text from PDF"""
+    """Extract text from PDF - tries text first, then OCR via Vision API"""
     content = []
     try:
         doc = fitz.open(file_path)
         total_pages = len(doc)
         print(f"   📄 Processing {total_pages} pages...")
+
+        # First try text extraction
         for i, page in enumerate(doc):
             text = page.get_text()
-            if text:
+            if text and text.strip():
                 content.append(text)
             if total_pages > 10 and (i + 1) % 10 == 0:
                 print(f"   📖 Processed {i+1}/{total_pages} pages...")
+
+        text_content = "\n".join(content)
+
+        # If no text found, use Vision API for image-based PDFs
+        if len(text_content.strip()) < 100:
+            print(f"   📷 PDF appears to be image-based. Using AI Vision...")
+            content = []
+            client = get_openai_client()
+
+            # Process pages as images (limit to first 20 pages for large PDFs)
+            pages_to_process = min(total_pages, 20)
+
+            for i in range(pages_to_process):
+                page = doc[i]
+                # Render page to image
+                pix = page.get_pixmap(matrix=fitz.Matrix(2, 2))  # 2x zoom for better quality
+                img_bytes = pix.tobytes("png")
+
+                # Convert to base64
+                import base64
+                img_base64 = base64.b64encode(img_bytes).decode('utf-8')
+
+                try:
+                    response = client.chat.completions.create(
+                        model="gpt-4o",
+                        messages=[
+                            {
+                                "role": "user",
+                                "content": [
+                                    {
+                                        "type": "text",
+                                        "text": "Extract ALL text from this page. Include all headings, paragraphs, code blocks, lists, and any other text content. Return only the extracted text, nothing else."
+                                    },
+                                    {
+                                        "type": "image_url",
+                                        "image_url": {
+                                            "url": f"data:image/png;base64,{img_base64}"
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        max_tokens=4000
+                    )
+                    page_text = response.choices[0].message.content
+                    if page_text:
+                        content.append(page_text)
+
+                    if (i + 1) % 5 == 0:
+                        print(f"   🔍 OCR processed {i+1}/{pages_to_process} pages...")
+
+                except Exception as e:
+                    print(f"   ⚠️ Page {i+1} OCR failed: {e}")
+
+            if total_pages > 20:
+                print(f"   ℹ️ Processed first 20 of {total_pages} pages")
+
+            text_content = "\n\n".join(content)
+
         doc.close()
+        return text_content
+
     except Exception as e:
         print(f"   ❌ PDF extraction failed: {e}")
         return ""
-    return "\n".join(content)
 
 
 def read_file_content(file_path: str) -> str:
