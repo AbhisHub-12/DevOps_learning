@@ -1,11 +1,11 @@
 #!/bin/bash
 #
-# Smart Learning Assistant v2.0 - Easy Runner
+# Smart Learning Assistant v3.0 - Easy Runner
 # Usage: ./run.sh [options]
 #
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PYTHON_SCRIPT="$SCRIPT_DIR/smart_learn.py"
+PYTHON_SCRIPT="$SCRIPT_DIR/smart_learn_v3.py"
 
 # Colors for output
 RED='\033[0;31m'
@@ -15,11 +15,15 @@ YELLOW='\033[1;33m'
 CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
+# V3 Sections in DevOps_Notes.html
+declare -a SECTIONS=("git-advanced" "github-actions" "linux" "cicd" "docker" "kubernetes" "ingress" "observability")
+declare -a SECTION_NAMES=("Git & GitHub Advanced" "GitHub Actions" "Linux for DevOps" "CI/CD Pipelines" "Docker Deep Dive" "Kubernetes" "Ingress & Cert Manager" "Observability")
+
 show_banner() {
     echo -e "${BLUE}"
     echo "╔═══════════════════════════════════════════════════════════╗"
-    echo "║         🚀 Smart Learning Assistant v2.0                  ║"
-    echo "║         Add knowledge to your DevOps repo easily          ║"
+    echo "║         🚀 Smart Learning Assistant v3.0                  ║"
+    echo "║         Adds to DevOps_Notes.html sections                ║"
     echo "╚═══════════════════════════════════════════════════════════╝"
     echo -e "${NC}"
 }
@@ -27,82 +31,42 @@ show_banner() {
 show_menu() {
     echo -e "${GREEN}Choose an option:${NC}"
     echo ""
-    echo "  1) 📄 Add from file (auto-detect topics)"
-    echo "  2) 📄 Add from file → specific topic"
-    echo "  3) 📋 Paste content (auto-detect topics)"
-    echo "  4) 📋 Paste content → specific topic"
+    echo "  1) 📄 Add from file (auto-detect section)"
+    echo "  2) 📄 Add from file → specific section"
+    echo "  3) 📋 Paste content (auto-detect section)"
+    echo "  4) 📋 Paste content → specific section"
     echo "  5) 🔍 Search existing notes"
-    echo "  6) 📚 List all topics"
+    echo "  6) 📚 List all sections"
     echo "  7) 🧪 Dry run (preview without saving)"
     echo "  8) ❓ Help"
     echo "  9) 🚪 Exit"
     echo ""
 }
 
-select_topic() {
-    # This function sets the global SELECTED_TOPIC variable
-    SELECTED_TOPIC=""
+select_section() {
+    SELECTED_SECTION=""
 
     echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-    echo -e "${CYAN}📚 Select Topic:${NC}"
+    echo -e "${CYAN}📚 Select Section (from DevOps_Notes.html):${NC}"
     echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
-    # Check if topics directory exists and has files
-    TOPICS_DIR="$SCRIPT_DIR/../topics"
-    declare -a topic_list=()
+    count=1
+    for i in "${!SECTIONS[@]}"; do
+        echo -e "  ${GREEN}$count)${NC} ${SECTIONS[$i]} - ${SECTION_NAMES[$i]}"
+        ((count++))
+    done
 
-    if [ -d "$TOPICS_DIR" ] && [ "$(ls -A "$TOPICS_DIR" 2>/dev/null)" ]; then
-        count=1
-        for file in "$TOPICS_DIR"/*.html; do
-            if [ -f "$file" ]; then
-                topic_name=$(basename "$file" .html)
-                topic_list+=("$topic_name")
-                echo -e "  ${GREEN}$count)${NC} $topic_name"
-                ((count++))
-            fi
-        done
-        echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-        echo -e "  ${YELLOW}$count)${NC} ➕ Create NEW topic"
-        echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-        echo ""
-        echo -e "${YELLOW}Enter number or type topic name directly:${NC}"
-        read -r selection
+    echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo ""
+    echo -e "${YELLOW}Enter number or type section name directly:${NC}"
+    read -r selection
 
-        if [[ "$selection" =~ ^[0-9]+$ ]]; then
-            if [ "$selection" -eq "$count" ]; then
-                echo -e "${YELLOW}Enter new topic name:${NC}"
-                read -r SELECTED_TOPIC
-            elif [ "$selection" -ge 1 ] && [ "$selection" -lt "$count" ]; then
-                SELECTED_TOPIC="${topic_list[$((selection-1))]}"
-            fi
-        else
-            SELECTED_TOPIC="$selection"
+    if [[ "$selection" =~ ^[0-9]+$ ]]; then
+        if [ "$selection" -ge 1 ] && [ "$selection" -le ${#SECTIONS[@]} ]; then
+            SELECTED_SECTION="${SECTIONS[$((selection-1))]}"
         fi
     else
-        echo -e "  ${YELLOW}No topics created yet. Common topics:${NC}"
-        echo ""
-        echo "  1) docker          2) kubernetes       3) terraform"
-        echo "  4) aws             5) linux            6) git"
-        echo "  7) jenkins         8) ansible          9) helm"
-        echo "  10) prometheus     11) argocd          12) ➕ NEW topic"
-        echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-
-        declare -a defaults=("docker" "kubernetes" "terraform" "aws" "linux" "git" "jenkins" "ansible" "helm" "prometheus" "argocd")
-
-        echo ""
-        echo -e "${YELLOW}Enter number or type topic name directly:${NC}"
-        read -r selection
-
-        if [[ "$selection" =~ ^[0-9]+$ ]]; then
-            if [ "$selection" -eq 12 ]; then
-                echo -e "${YELLOW}Enter new topic name:${NC}"
-                read -r SELECTED_TOPIC
-            elif [ "$selection" -ge 1 ] && [ "$selection" -le 11 ]; then
-                SELECTED_TOPIC="${defaults[$((selection-1))]}"
-            fi
-        else
-            SELECTED_TOPIC="$selection"
-        fi
+        SELECTED_SECTION="$selection"
     fi
 }
 
@@ -124,7 +88,7 @@ add_file() {
     fi
 }
 
-add_file_with_topic() {
+add_file_with_section() {
     echo -e "${YELLOW}Enter file path (drag & drop works):${NC}"
     read -r filepath
     # Remove quotes if present (from drag & drop)
@@ -140,31 +104,32 @@ add_file_with_topic() {
     fi
 
     echo ""
-    select_topic
+    select_section
 
-    if [ -n "$SELECTED_TOPIC" ]; then
+    if [ -n "$SELECTED_SECTION" ]; then
         echo ""
-        echo -e "${GREEN}📁 Adding to topic: $SELECTED_TOPIC${NC}"
-        python3 "$PYTHON_SCRIPT" -f "$filepath" -t "$SELECTED_TOPIC"
+        echo -e "${GREEN}📁 Adding to section: $SELECTED_SECTION${NC}"
+        python3 "$PYTHON_SCRIPT" -f "$filepath" -t "$SELECTED_SECTION"
     else
-        echo -e "${RED}No topic specified${NC}"
+        echo -e "${RED}No section specified${NC}"
     fi
 }
 
 paste_content() {
+    echo -e "${YELLOW}Paste your content (Ctrl+D when done):${NC}"
     python3 "$PYTHON_SCRIPT" -i
 }
 
-paste_content_with_topic() {
-    select_topic
+paste_content_with_section() {
+    select_section
 
-    if [ -n "$SELECTED_TOPIC" ]; then
+    if [ -n "$SELECTED_SECTION" ]; then
         echo ""
-        echo -e "${GREEN}📁 Adding to topic: $SELECTED_TOPIC${NC}"
+        echo -e "${GREEN}📁 Adding to section: $SELECTED_SECTION${NC}"
         echo -e "${YELLOW}Now paste your content (Ctrl+D when done):${NC}"
-        python3 "$PYTHON_SCRIPT" -i -t "$SELECTED_TOPIC"
+        python3 "$PYTHON_SCRIPT" -i -t "$SELECTED_SECTION"
     else
-        echo -e "${RED}No topic specified${NC}"
+        echo -e "${RED}No section specified${NC}"
     fi
 }
 
@@ -176,16 +141,16 @@ search_notes() {
     fi
 }
 
-list_topics() {
+list_sections() {
     python3 "$PYTHON_SCRIPT" --list
 }
 
 dry_run() {
     echo -e "${YELLOW}Choose input method:${NC}"
     echo "  1) File (auto-detect)"
-    echo "  2) File → specific topic"
+    echo "  2) File → specific section"
     echo "  3) Paste (auto-detect)"
-    echo "  4) Paste → specific topic"
+    echo "  4) Paste → specific section"
     read -r method
 
     case $method in
@@ -210,9 +175,9 @@ dry_run() {
             filepath="${filepath%\"}"
             filepath="${filepath#\"}"
             if [ -f "$filepath" ]; then
-                select_topic
-                if [ -n "$SELECTED_TOPIC" ]; then
-                    python3 "$PYTHON_SCRIPT" --dry-run -f "$filepath" -t "$SELECTED_TOPIC"
+                select_section
+                if [ -n "$SELECTED_SECTION" ]; then
+                    python3 "$PYTHON_SCRIPT" --dry-run -f "$filepath" -t "$SELECTED_SECTION"
                 fi
             else
                 echo -e "${RED}File not found${NC}"
@@ -226,12 +191,12 @@ dry_run() {
             fi
             ;;
         4)
-            select_topic
-            if [ -n "$SELECTED_TOPIC" ]; then
+            select_section
+            if [ -n "$SELECTED_SECTION" ]; then
                 echo -e "${YELLOW}Paste content (Ctrl+D when done):${NC}"
                 content=$(cat)
                 if [ -n "$content" ]; then
-                    echo "$content" | python3 "$PYTHON_SCRIPT" --dry-run -i -t "$SELECTED_TOPIC"
+                    echo "$content" | python3 "$PYTHON_SCRIPT" --dry-run -i -t "$SELECTED_SECTION"
                 fi
             fi
             ;;
@@ -247,22 +212,23 @@ show_help() {
     echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
     echo -e "${GREEN}Quick Commands:${NC}"
     echo ""
-    echo -e "  ${CYAN}Auto-detect topics:${NC}"
-    echo "    learn2 -f /path/to/file.pdf"
-    echo "    learn2 -i"
+    echo -e "  ${CYAN}Auto-detect section:${NC}"
+    echo "    learn3 -f /path/to/file.pdf"
+    echo "    learn3 -i"
     echo ""
-    echo -e "  ${CYAN}Specify topic (existing):${NC}"
-    echo "    learn2 -f file.pdf -t kubernetes"
-    echo "    learn2 -f file.pdf -t docker"
+    echo -e "  ${CYAN}Specify section:${NC}"
+    echo "    learn3 -f file.pdf -t kubernetes"
+    echo "    learn3 -f file.pdf -t docker"
+    echo "    learn3 -f file.pdf -t git-advanced"
     echo ""
-    echo -e "  ${CYAN}Create new topic:${NC}"
-    echo "    learn2 -f file.pdf -t \"service-mesh\""
-    echo "    learn2 -f file.pdf -t \"my-custom-notes\""
+    echo -e "  ${CYAN}Available sections:${NC}"
+    echo "    git-advanced, github-actions, linux, cicd"
+    echo "    docker, kubernetes, ingress, observability"
     echo ""
     echo -e "  ${CYAN}Other:${NC}"
-    echo "    learn2 --list                    - List all topics"
-    echo "    learn2 --search \"keyword\"        - Search notes"
-    echo "    learn2 --dry-run -f file.pdf     - Preview"
+    echo "    learn3 --list                    - List all sections"
+    echo "    learn3 --search \"keyword\"        - Search notes"
+    echo "    learn3 --dry-run -f file.pdf     - Preview"
     echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 }
 
@@ -284,11 +250,11 @@ while true; do
 
     case $choice in
         1) add_file ;;
-        2) add_file_with_topic ;;
+        2) add_file_with_section ;;
         3) paste_content ;;
-        4) paste_content_with_topic ;;
+        4) paste_content_with_section ;;
         5) search_notes ;;
-        6) list_topics ;;
+        6) list_sections ;;
         7) dry_run ;;
         8) show_help ;;
         9) echo -e "${GREEN}Goodbye! Happy Learning! 🎓${NC}"; exit 0 ;;
