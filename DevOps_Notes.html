@@ -352,6 +352,7 @@
                 <li><a href="#kubernetes">Kubernetes</a></li>
                 <li><a href="#ingress">Ingress & Cert Manager</a></li>
                 <li><a href="#observability">Observability</a></li>
+                            <li><a href="#terraform">Terraform</a></li>
             </ul>
         </nav>
         
@@ -1379,6 +1380,636 @@ kubectl rollout restart deployment/app
 find /var/log -name "*.log" -mtime +30 -delete
 du -sh * | sort -hr | head -10
                 </div>
+            </section>
+        
+            <!-- New Section Added on 2025-12-03 13:41 -->
+            <section id="terraform" class="section">
+                <h2>9. Terraform</h2>
+
+<h2>Terraform Interview Questions</h2>
+
+<p>By DevOps Shack</p>
+
+<h3>Table of Contents</h3>
+<ol>
+    <li>Introduction to Terraform
+        <ul>
+            <li>What is Terraform and what are its main features?</li>
+            <li>Can you explain the difference between Terraform and other configuration management tools like Ansible, Puppet, or Chef?</li>
+        </ul>
+    </li>
+    <li>State Management
+        <ul>
+            <li>What is state in Terraform, and why is it important?</li>
+            <li>How do you manage multiple environments (e.g., development, staging, production) in Terraform?</li>
+        </ul>
+    </li>
+    <li>Providers and Modules
+        <ul>
+            <li>What is a Terraform provider, and how do you use it?</li>
+            <li>Explain the difference between Terraform modules and resources.</li>
+        </ul>
+    </li>
+    <li>Importing Resources
+        <ul>
+            <li>How can you import existing infrastructure into Terraform?</li>
+        </ul>
+    </li>
+    <li>Variables and Outputs
+        <ul>
+            <li>What are Terraform variables, and how do you use them?</li>
+            <li>How do you handle secrets or sensitive data in Terraform?</li>
+        </ul>
+    </li>
+    <li>Initialization and Planning
+        <ul>
+            <li>What is the purpose of the terraform init command?</li>
+            <li>How does Terraform handle concurrent operations in a team environment?</li>
+        </ul>
+    </li>
+    <li>Advanced Features
+        <ul>
+            <li>How does Terraform handle resource dependencies?</li>
+            <li>What is drift detection in Terraform, and how do you handle drift?</li>
+        </ul>
+    </li>
+    <li>Lifecycle Management
+        <ul>
+            <li>How does Terraform manage resource lifecycles?</li>
+            <li>What is the purpose of the terraform taint command?</li>
+        </ul>
+    </li>
+    <li>Dynamic Blocks and Conditional Logic
+        <ul>
+            <li>What are Terraform dynamic blocks, and how are they used?</li>
+            <li>How does Terraform support conditional resource creation?</li>
+        </ul>
+    </li>
+    <li>Remote State Management
+        <ul>
+            <li>How do you manage remote state in Terraform?</li>
+            <li>How does Terraform state file locking work in remote backends?</li>
+        </ul>
+    </li>
+    <li>Formatting and Debugging
+        <ul>
+            <li>What is terraform fmt, and why is it important?</li>
+            <li>How do you debug errors in Terraform?</li>
+        </ul>
+    </li>
+    <li>Zero-Downtime Deployments
+        <ul>
+            <li>How does Terraform handle zero-downtime deployments?</li>
+        </ul>
+    </li>
+    <li>Provisioners
+        <ul>
+            <li>Explain the difference between local-exec and remote-exec provisioners.</li>
+        </ul>
+    </li>
+    <li>Shared Modules
+        <ul>
+            <li>How do you manage shared modules in Terraform?</li>
+        </ul>
+    </li>
+    <li>Terraform Cloud
+        <ul>
+            <li>What is Terraform Cloud, and how does it differ from Terraform CLI?</li>
+        </ul>
+    </li>
+    <li>Resource Management
+        <ul>
+            <li>What are Terraform backends, and why are they important?</li>
+            <li>What is the purpose of the terraform output command?</li>
+        </ul>
+    </li>
+    <li>Version Constraints
+        <ul>
+            <li>How does Terraform manage provider and configuration version constraints?</li>
+        </ul>
+    </li>
+    <li>Secrets Management
+        <ul>
+            <li>How can you securely manage secrets in Terraform?</li>
+        </ul>
+    </li>
+    <li>Interactive Console
+        <ul>
+            <li>What is the purpose of the terraform console command?</li>
+        </ul>
+    </li>
+    <li>Limitations and Best Practices
+        <ul>
+            <li>What are the limitations of Terraform?</li>
+            <li>How can you ensure best practices while working with Terraform?</li>
+        </ul>
+    </li>
+</ol>
+
+<h3>Introduction to Terraform</h3>
+<p>Terraform, developed by HashiCorp, is one of the most popular Infrastructure as Code (IaC) tools, enabling developers and operations teams to define, provision, and manage infrastructure efficiently. With its declarative configuration language (HCL) and multi-cloud compatibility, Terraform has become a go-to tool for automating infrastructure management. This document compiles 50 Terraform interview questions and answers, covering fundamental concepts, advanced features, and practical use cases. It serves as a comprehensive guide for professionals preparing for Terraform interviews or looking to strengthen their understanding of the tool.</p>
+
+<h3>What is Terraform and what are its main features?</h3>
+<p>Terraform is an open-source Infrastructure as Code (IaC) tool developed by HashiCorp. It allows you to define, provision, and manage infrastructure across various cloud providers and services using a declarative configuration language known as HashiCorp Configuration Language (HCL).</p>
+
+<h3>Main Features:</h3>
+<ul>
+    <li>Infrastructure as Code (IaC): Manage infrastructure using code, enabling version control, reuse, and sharing.</li>
+    <li>Provider Agnostic: Supports multiple providers like AWS, Azure, GCP, and others, allowing for a consistent workflow.</li>
+    <li>Execution Plans: Generates and shows execution plans before applying changes, helping you understand what Terraform will do.</li>
+    <li>Resource Graph: Builds a graph of all resources and their dependencies, optimizing resource creation and modification.</li>
+    <li>Change Automation: Automates complex changesets to your infrastructure with minimal human interaction.</li>
+</ul>
+
+<h3>Can you explain the difference between Terraform and other configuration management tools like Ansible, Puppet, or Chef?</h3>
+<p><strong>Purpose:</strong></p>
+<ul>
+    <li><strong>Terraform:</strong> Primarily an infrastructure provisioning tool. It focuses on creating, updating, and versioning infrastructure safely and efficiently.</li>
+    <li><strong>Ansible/Puppet/Chef:</strong> Primarily configuration management tools. They are used to install and manage software on existing servers.</li>
+</ul>
+<p><strong>Approach:</strong></p>
+<ul>
+    <li><strong>Terraform:</strong> Declarative. You describe the desired state, and Terraform figures out how to achieve it.</li>
+    <li><strong>Ansible/Puppet/Chef:</strong> Can be both declarative and procedural, depending on how you write your configurations or playbooks.</li>
+</ul>
+<p><strong>Infrastructure Lifecycle:</strong></p>
+<ul>
+    <li><strong>Terraform:</strong> Manages the entire lifecycle of infrastructure, including creation, scaling, and destruction.</li>
+    <li><strong>Ansible/Puppet/Chef:</strong> Manages the software and settings on already provisioned infrastructure.</li>
+</ul>
+
+<h3>What is state in Terraform, and why is it important?</h3>
+<p><strong>Terraform State:</strong> A persistent data store that maps Terraform configurations to real-world resources. It's typically stored in a file named terraform.tfstate.</p>
+<p><strong>Importance:</strong></p>
+<ul>
+    <li><strong>Mapping:</strong> Keeps track of resource IDs and metadata, enabling Terraform to manage resources effectively.</li>
+    <li><strong>Planning and Execution:</strong> Allows Terraform to generate accurate execution plans by knowing the current state of resources.</li>
+    <li><strong>Collaboration:</strong> When stored remotely (e.g., in AWS S3 or Terraform Cloud), it enables team collaboration by sharing the state.</li>
+</ul>
+
+<h3>Managing Multiple Environments in Terraform</h3>
+<p>To manage multiple environments (e.g., development, staging, production) in Terraform, you can use the following methods:</p>
+
+<h4>Workspaces</h4>
+<ul>
+    <li>Use Terraform workspaces to maintain separate state files within the same configuration for different environments.</li>
+    <li>Example:</li>
+</ul>
+<div class="command-box">
+# Create and select a workspace
+terraform workspace new development
+terraform workspace select development
+</div>
+
+<h4>Directory Structure</h4>
+<ul>
+    <li>Organize configurations into separate directories for each environment, each with its own state.</li>
+    <li>Example:</li>
+</ul>
+<div class="command-box">
+# Directory structure
+├── environments
+│   ├── dev
+│   ├── staging
+│   └── prod
+</div>
+
+<h4>Variable Files</h4>
+<ul>
+    <li>Use different .tfvars files for each environment to parameterize configurations.</li>
+    <li>Example:</li>
+</ul>
+<div class="command-box">
+# Apply configuration with variable file
+terraform apply -var-file="dev.tfvars"
+</div>
+
+<h4>Backend Configuration</h4>
+<p>Configure backends to manage state storage for different environments.</p>
+
+<h3>Terraform Provider</h3>
+<p>A Terraform provider is a plugin that interacts with APIs of cloud platforms and services (e.g., AWS, Azure, Google Cloud). Providers define resources and data sources for a service.</p>
+
+<h4>Usage</h4>
+<ul>
+    <li><strong>Declaration:</strong></li>
+</ul>
+<div class="command-box">
+# Declare a provider
+provider "aws" {
+  region = "us-west-2"
+}
+</div>
+
+<ul>
+    <li><strong>Version Pinning:</strong></li>
+</ul>
+<div class="command-box">
+# Pin provider version
+provider "aws" {
+  version = "~> 3.0"
+  region = "us-west-2"
+}
+</div>
+
+<ul>
+    <li>You can configure multiple providers to manage resources across different platforms.</li>
+</ul>
+
+<h3>Difference Between Terraform Modules and Resources</h3>
+<h4>Resources</h4>
+<p>Resources are the basic building blocks in Terraform, representing infrastructure objects like virtual networks, compute instances, or databases.</p>
+<div class="command-box">
+# Example of a resource
+resource "aws_instance" "web_server" {
+    ami           = "ami-0c55b159cbfafe1f0"
+    instance_type = "t2.micro"
+}
+</div>
+
+<h4>Modules</h4>
+<p>Modules are containers for multiple resources that are used together, promoting code reuse and organization. They can be shared and versioned.</p>
+<div class="command-box">
+# Example of using a module
+module "vpc" {
+    source = "terraform-aws-modules/vpc/aws"
+    version = "2.77.0"
+    
+    name = "my-vpc"
+    cidr = "10.0.0.0/16"
+}
+</div>
+
+<h3>Importing Existing Infrastructure into Terraform</h3>
+<h4>Step 1: Write Resource Configuration</h4>
+<p>Define the resource in your .tf files without any parameters that Terraform can't infer.</p>
+<div class="command-box">
+# Resource configuration
+resource "aws_instance" "existing" {
+    # Configuration will be populated after import
+}
+</div>
+
+<h4>Step 2: Run Import Command</h4>
+<p>Use terraform import to map the existing resource to the Terraform resource.</p>
+<div class="command-box">
+# Import command
+terraform import aws_instance.existing i-0abcdef1234567890
+</div>
+
+<h4>Step 3: Refresh and Update Configuration</h4>
+<p>Run terraform plan to see differences and update the configuration to match the actual settings.</p>
+
+<h3>Terraform Variables</h3>
+<h4>Input Variables</h4>
+<p>Input variables are parameters for Terraform modules, making configurations flexible and reusable.</p>
+<div class="command-box">
+# Example of an input variable
+variable "instance_type" {
+    type        = string
+    default     = "t2.micro"
+    description = "EC2 instance type"
+}
+</div>
+
+<h4>Usage</h4>
+<div class="command-box">
+# Using a variable in a resource
+resource "aws_instance" "web" {
+    ami           = "ami-0c55b159cbfafe1f0"
+    instance_type = var.instance_type
+}
+</div>
+
+<h4>Setting Variables</h4>
+<ul>
+    <li><strong>Environment Variables:</strong> export TF_VAR_instance_type="t2.small"</li>
+    <li><strong>Command-Line Flags:</strong> terraform apply -var="instance_type=t2.small"</li>
+    <li><strong>Variable Files:</strong> Create .tfvars files and pass them with -var-file flag.</li>
+</ul>
+
+<h4>Output Variables</h4>
+<p>Output variables are used to expose values to the user or other configurations.</p>
+<div class="command-box">
+# Example of an output variable
+output "instance_ip" {
+  value = aws_instance.web.public_ip
+}
+</div>
+
+<h3>Handling Secrets or Sensitive Data in Terraform</h3>
+<h4>Sensitive Variables</h4>
+<p>Mark variables as sensitive to prevent them from being displayed in logs.</p>
+<div class="command-box">
+# Example of a sensitive variable
+variable "db_password" {
+  type        = string
+  sensitive   = true
+}
+</div>
+
+<h4>Avoid Hardcoding</h4>
+<p>Do not store secrets in code or version control. Use environment variables or prompt for input.</p>
+
+<h4>Use Vault or Secret Management Services</h4>
+<p>Integrate with tools like HashiCorp Vault to fetch secrets at runtime.</p>
+
+<h4>Secure State Storage</h4>
+<p>Use encrypted remote backends to store state files securely.</p>
+
+<h4>Example of Fetching a Secret</h4>
+<div class="command-box">
+# Example of fetching a secret from Vault
+data "vault_generic_secret" "db_password" {
+    path = "secret/data/db_password"
+}
+
+resource "aws_db_instance" "example" {
+    password = data.vault_generic_secret.db_password.data["password"]
+    # Other configurations
+}
+</div>
+
+<h3>Purpose of the terraform init Command</h3>
+<p>The terraform init command initializes a Terraform working directory by downloading and installing the necessary providers and modules.</p>
+
+<h4>Functions</h4>
+<ul>
+    <li><strong>Plugin Installation:</strong> Downloads provider plugins required for the configuration.</li>
+    <li><strong>Backend Initialization:</strong> Sets up the backend for state storage.</li>
+    <li><strong>Module Installation:</strong> Downloads modules from sources like GitHub or the Terraform Registry.</li>
+</ul>
+
+<h4>When to Run</h4>
+<ul>
+    <li>First time setting up a configuration.</li>
+    <li>After adding or changing providers or modules.</li>
+    <li>After cloning a repository containing Terraform configurations.</li>
+</ul>
+
+<h3>Handling Resource Dependencies in Terraform</h3>
+<h4>Implicit Dependencies</h4>
+<p>Terraform automatically determines resource dependencies by analyzing references in configurations.</p>
+<div class="command-box">
+# Example of implicit dependencies
+resource "aws_instance" "example" {
+  ami           = "ami-0c55b159cbfafe1f0"
+  instance_type = "t2.micro"
+  subnet_id     = aws_subnet.example.id
+}
+
+resource "aws_subnet" "example" {
+  vpc_id     = aws_vpc.example.id
+  cidr_block = "10.0.1.0/24"
+}
+</div>
+
+<h4>Explicit Dependencies</h4>
+<p>Use depends_on when a dependency isn’t detected automatically.</p>
+<div class="command-box">
+# Example of explicit dependencies
+resource "null_resource" "example" {
+  depends_on = [aws_instance.example]
+}
+</div>
+
+<h3>Managing Remote State in Terraform</h3>
+<p>Remote state is used to share the state file among team members and secure it.</p>
+
+<h4>Example Using AWS S3</h4>
+<div class="command-box">
+# Example of remote state configuration
+# (Configuration details would be added here)
+</div>
+
+<h3>Terraform Backend Configuration</h3>
+<div class="command-box">
+# Terraform backend configuration for S3
+terraform {
+  backend "s3" {
+    bucket         = "my-terraform-state"
+    key            = "global/s3/terraform.tfstate"
+    region         = "us-west-2"
+    encrypt        = true
+    dynamodb_table = "terraform-lock-table"
+  }
+}
+</div>
+
+<h3>Features of Terraform Backend</h3>
+<ul>
+    <li><strong>Storage:</strong> Stores the state in a remote backend like S3, Azure Blob, or Terraform Cloud.</li>
+    <li><strong>Locking:</strong> Prevents concurrent changes using mechanisms like DynamoDB tables.</li>
+</ul>
+
+<h3>Terraform Data Sources</h3>
+<p>Data Sources allow you to fetch existing information or resources from a provider.</p>
+
+<h3>Example of a Data Source</h3>
+<div class="command-box">
+# Fetching the most recent AWS AMI
+data "aws_ami" "example" {
+  most_recent = true
+  owners      = ["self"]
+
+  filter {
+    name = "name"
+  }
+}
+
+values = ["my-ami-*"]
+</div>
+
+<h3>Using Data Source in a Resource</h3>
+<div class="command-box">
+# Example of using a data source in a resource
+resource "aws_instance" "example" {
+  ami           = data.aws_ami.example.id
+  instance_type = "t2.micro"
+}
+</div>
+
+<h3>Terraform Commands: Plan vs Apply</h3>
+<ul>
+    <li><strong>terraform plan:</strong> Shows the changes Terraform will make to your infrastructure without actually applying them. Use for review and approval.</li>
+    <li><strong>terraform apply:</strong> Executes the changes proposed in the plan, creating, modifying, or destroying resources as necessary.</li>
+</ul>
+
+<h3>Count vs For_each in Terraform</h3>
+<ul>
+    <li><strong>count:</strong> Creates multiple resources by a specified number.</li>
+</ul>
+<div class="command-box">
+# Example using count
+resource "aws_instance" "example" {
+  count         = 3
+  instance_type = "t2.micro"
+  ami           = "ami-0c55b159cbfafe1f0"
+}
+</div>
+<p>Accessed using <code>count.index</code>.</p>
+
+<ul>
+    <li><strong>for_each:</strong> Creates resources based on a map or a set.</li>
+</ul>
+<div class="command-box">
+# Example using for_each
+resource "aws_instance" "example" {
+  for_each = {
+    server1 = "t2.micro"
+    server2 = "t2.small"
+  }
+  
+  instance_type = each.value
+  ami = "ami-0c55b159cbfafe1f0"
+}
+</div>
+<p>Accessed using <code>each.key</code> and <code>each.value</code>.</p>
+
+<h3>Debugging Errors in Terraform</h3>
+<ul>
+    <li><strong>Enable Debug Logs:</strong> Set the TF_LOG environment variable.</li>
+</ul>
+<div class="command-box">
+# Enable debug logs
+export TF_LOG=DEBUG
+terraform apply
+</div>
+<ul>
+    <li><strong>Log Output File:</strong> Redirect logs to a file for detailed review.</li>
+</ul>
+<div class="command-box">
+# Redirect logs to a file
+export TF_LOG_PATH="terraform.log"
+</div>
+<p>Validate Configurations: Use <code>terraform validate</code> to check for syntax errors.</p>
+<p>Plan Execution: Run <code>terraform plan</code> to identify issues in execution plans.</p>
+
+<h3>Local-exec vs Remote-exec Provisioners</h3>
+<ul>
+    <li><strong>local-exec:</strong> Executes commands on the machine running Terraform.</li>
+</ul>
+<div class="command-box">
+# Example of local-exec
+resource "null_resource" "example" {
+   provisioner "local-exec" {
+      command = "echo 'Hello, World!'"
+   }
+}
+</div>
+<ul>
+    <li><strong>remote-exec:</strong> Executes commands on a remote resource (e.g., an EC2 instance).</li>
+</ul>
+<div class="command-box">
+# Example of remote-exec
+resource "aws_instance" "example" {
+   provisioner "remote-exec" {
+      inline = [
+         "sudo apt-get update",
+         "sudo apt-get install -y nginx"
+      ]
+   }
+}
+</div>
+
+<h3>Null Resource in Terraform</h3>
+<p>A <strong>null_resource</strong> is a resource that doesn’t directly manage infrastructure but allows running provisioners and triggers.</p>
+<div class="command-box">
+# Example of null_resource
+resource "null_resource" "example" {
+  provisioner "local-exec" {
+    command = "echo 'Triggered by change in variables!'"
+  }
+ 
+  triggers = {
+    variable = var.example_variable
+  }
+}
+</div>
+<h3>Use Cases for Null Resource</h3>
+<ul>
+    <li>Execute local commands or scripts based on conditions.</li>
+    <li>Handle non-infrastructure workflows.</li>
+</ul>
+
+<h3>Terraform fmt</h3>
+<p><strong>terraform fmt:</strong> Formats Terraform configuration files to ensure consistent style.</p>
+<p>Run it in the directory containing .tf files: <code>terraform fmt</code></p>
+<h3>Importance of terraform fmt</h3>
+<p>Improves readability and standardizes configuration files.</p>
+
+<h3>Terraform Taint Command</h3>
+<p><strong>terraform taint:</strong> Marks a resource as needing to be destroyed and recreated during the next terraform apply.</p>
+<div class="command-box">
+# Example of terraform taint
+terraform taint aws_instance.example
+</div>
+<p>Use Case: When a resource is in an inconsistent state or needs to be updated due to external changes.</p>
+
+<h3>Difference Between terraform destroy and terraform apply -destroy</h3>
+<ul>
+    <li><strong>terraform destroy:</strong> Deletes all the resources defined in the current state file.</li>
+</ul>
+<div class="command-box">
+# Command to destroy resources
+terraform destroy
+</div>
+<ul>
+    <li><strong>terraform apply -destroy:</strong> Combines terraform plan and terraform destroy into one command, showing a plan before destruction.</li>
+</ul>
+<div class="command-box">
+# Command to apply destroy
+terraform apply -destroy
+</div>
+
+<h3>Rollback Changes in Terraform</h3>
+<ul>
+    <li><strong>State Restoration:</strong> Restore a previous state backup if state file corruption occurs.</li>
+</ul>
+<div class="command-box">
+# Restore state from backup
+cp terraform.tfstate.backup terraform.tfstate
+</div>
+<ul>
+    <li><strong>Revert Code Changes:</strong> Revert to a previous commit in version control and reapply.</li>
+</ul>
+<div class="command-box">
+# Revert to a previous commit
+git checkout <commit-id>
+terraform apply
+</div>
+<ul>
+    <li><strong>Manual Correction:</strong> Edit configurations and use terraform plan to apply corrective changes.</li>
+</ul>
+
+<h3>Terraform Modules</h3>
+<p>Terraform Modules are a way to encapsulate resources for reuse.</p>
+
+<h3>Steps to Create a Module</h3>
+<p>Structure:</p>
+<pre>
+├── main.tf
+├── variables.tf
+└── outputs.tf
+</pre>
+
+<h3>Module Definition</h3>
+<div class="command-box">
+# main.tf
+resource "aws_instance" "example" {
+    ami           = var.ami
+    instance_type = var.instance_type
+}
+</div>
+<div class="command-box">
+# variables.tf
+variable "ami" {}
+variable "instance_type" {
+    default = "t2.micro"
+}
+</div>
+
+
             </section>
         </main>
     </div>
