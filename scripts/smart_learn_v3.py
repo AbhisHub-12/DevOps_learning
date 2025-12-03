@@ -40,13 +40,123 @@ except ImportError:
     subprocess.run([sys.executable, "-m", "pip", "install", "PyMuPDF", "--break-system-packages", "-q"])
     import fitz
 
+# Google Drive imports
+try:
+    from google.oauth2.credentials import Credentials
+    from google_auth_oauthlib.flow import InstalledAppFlow
+    from google.auth.transport.requests import Request
+    from googleapiclient.discovery import build
+    from googleapiclient.http import MediaFileUpload
+    GOOGLE_DRIVE_AVAILABLE = True
+except ImportError:
+    GOOGLE_DRIVE_AVAILABLE = False
+
 # Configuration
 CONFIG_PATH = "/Users/abhishtbagewadi/Documents/Scripts/RCA-SCRIPT-2/abhisht_script_github_ready/config/config.yaml"
 REPO_PATH = Path.home() / "DevOps_learning"
 NOTES_FILE = REPO_PATH / "DevOps_Notes.html"
+CREDENTIALS_FILE = REPO_PATH / "scripts" / "credentials.json"
+TOKEN_FILE = REPO_PATH / "scripts" / "token.json"
+
+# Google Drive folder ID
+DRIVE_FOLDER_ID = "1sO9ONt5MDsvVvv9AOyBlXKPjaGCvCehb"
 
 # Chunk size for large content
 CHUNK_SIZE = 6000
+
+# Google Drive Scopes
+SCOPES = ['https://www.googleapis.com/auth/drive.file']
+
+
+def get_drive_service():
+    """Get authenticated Google Drive service"""
+    if not GOOGLE_DRIVE_AVAILABLE:
+        return None
+
+    if not CREDENTIALS_FILE.exists():
+        print("   ⚠️ No credentials.json found. Skipping Drive upload.")
+        return None
+
+    creds = None
+    if TOKEN_FILE.exists():
+        creds = Credentials.from_authorized_user_file(str(TOKEN_FILE), SCOPES)
+
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        else:
+            flow = InstalledAppFlow.from_client_secrets_file(str(CREDENTIALS_FILE), SCOPES)
+            creds = flow.run_local_server(port=0)
+
+        with open(TOKEN_FILE, 'w') as token:
+            token.write(creds.to_json())
+
+    return build('drive', 'v3', credentials=creds)
+
+
+def upload_to_drive(file_path: str, section_name: str = "") -> Optional[str]:
+    """Upload file to Google Drive and return shareable link"""
+    try:
+        service = get_drive_service()
+        if not service:
+            return None
+
+        file_path = Path(file_path)
+        if not file_path.exists():
+            return None
+
+        # Create filename with section prefix
+        timestamp = datetime.now().strftime("%Y%m%d")
+        if section_name:
+            drive_filename = f"{section_name}_{file_path.name}"
+        else:
+            drive_filename = f"{timestamp}_{file_path.name}"
+
+        print(f"   📤 Uploading to Google Drive...")
+
+        file_metadata = {
+            'name': drive_filename,
+            'parents': [DRIVE_FOLDER_ID]
+        }
+
+        # Determine MIME type
+        suffix = file_path.suffix.lower()
+        mime_types = {
+            '.pdf': 'application/pdf',
+            '.txt': 'text/plain',
+            '.md': 'text/markdown',
+            '.py': 'text/x-python',
+            '.yaml': 'text/yaml',
+            '.yml': 'text/yaml',
+            '.json': 'application/json',
+            '.png': 'image/png',
+            '.jpg': 'image/jpeg',
+            '.jpeg': 'image/jpeg',
+        }
+        mime_type = mime_types.get(suffix, 'application/octet-stream')
+
+        media = MediaFileUpload(str(file_path), mimetype=mime_type, resumable=True)
+
+        file = service.files().create(
+            body=file_metadata,
+            media_body=media,
+            fields='id, webViewLink'
+        ).execute()
+
+        # Make file viewable by anyone with link
+        service.permissions().create(
+            fileId=file['id'],
+            body={'type': 'anyone', 'role': 'reader'}
+        ).execute()
+
+        drive_link = file.get('webViewLink')
+        print(f"   ✅ Uploaded: {drive_filename}")
+        return drive_link
+
+    except Exception as e:
+        print(f"   ⚠️ Drive upload failed: {e}")
+        return None
+
 
 # Existing sections in DevOps_Notes.html (id -> display name)
 EXISTING_SECTIONS = {
@@ -609,8 +719,12 @@ Examples:
     content = None
     source = "input"
 
+    drive_link = None
+    file_path_for_upload = None
+
     if args.file:
         print(f"\n📄 Reading: {args.file}")
+        file_path_for_upload = args.file
         content = read_file_content(args.file)
         source = Path(args.file).name
         print(f"   ✅ Extracted {len(content):,} characters")
@@ -645,6 +759,18 @@ Examples:
 
     print(f"\n📝 Formatting content for: {section_name}")
     formatted_html = analyze_and_format_content(client, content, section_name)
+
+    # Upload file to Google Drive if available
+    if file_path_for_upload and not args.dry_run:
+        drive_link = upload_to_drive(file_path_for_upload, section_id)
+        if drive_link:
+            # Add source link at the beginning of the formatted content
+            source_html = f'''
+                <div class="source-link" style="background: #e3f2fd; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+                    📎 <strong>Source:</strong> <a href="{drive_link}" target="_blank" style="color: #1976d2;">{source}</a>
+                </div>
+'''
+            formatted_html = source_html + formatted_html
 
     if args.dry_run:
         print("\n🔍 Dry run - preview:")
