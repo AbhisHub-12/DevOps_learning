@@ -399,6 +399,47 @@ def list_sections():
     print()
 
 
+def clear_section_content(section_id: str, dry_run: bool = False) -> bool:
+    """Clear all content from a section (keeps the section header)"""
+
+    with open(NOTES_FILE, 'r', encoding='utf-8') as f:
+        content = f.read()
+
+    # Pattern to match section content (keep header, remove rest)
+    pattern = rf'(<section id="{section_id}"[^>]*>\s*<h2>[^<]*</h2>).*?(</section>)'
+
+    match = re.search(pattern, content, re.DOTALL)
+    if not match:
+        print(f"❌ Section '{section_id}' not found")
+        return False
+
+    # Show what will be cleared
+    section_content = match.group(0)
+    print(f"\n🔍 Found section: {section_id}")
+    print(f"   Content length: {len(section_content)} characters")
+
+    if dry_run:
+        print(f"\n🧪 Dry run - would clear section '{section_id}'")
+        return True
+
+    # Replace with empty section (keep header)
+    new_section = match.group(1) + '\n\n            ' + match.group(2)
+    new_content = content.replace(section_content, new_section)
+
+    with open(NOTES_FILE, 'w', encoding='utf-8') as f:
+        f.write(new_content)
+
+    print(f"\n✅ Cleared section: {section_id}")
+
+    commit_msg = f"🗑️ Clear {section_id} section"
+    if git_commit_and_push(commit_msg):
+        print(f"📤 Pushed to GitHub!")
+    else:
+        print(f"⚠️ Saved locally.")
+
+    return True
+
+
 def remove_content_from_file(search_text: str, dry_run: bool = False) -> bool:
     """Search and remove content from DevOps_Notes.html"""
 
@@ -412,6 +453,27 @@ def remove_content_from_file(search_text: str, dry_run: bool = False) -> bool:
         print("❌ Search text too short (min 5 characters)")
         return False
 
+    # Check if user wants to clear a whole section
+    section_ids = list(EXISTING_SECTIONS.keys())
+    search_lower = search_text.lower().replace(" ", "-")
+
+    if search_lower in section_ids or search_text.lower() in [s.lower() for s in EXISTING_SECTIONS.values()]:
+        # User wants to clear a section
+        section_id = search_lower if search_lower in section_ids else None
+        if not section_id:
+            for sid, name in EXISTING_SECTIONS.items():
+                if name.lower() == search_text.lower():
+                    section_id = sid
+                    break
+
+        if section_id:
+            print(f"\n⚠️  You entered a section name: '{section_id}'")
+            print(f"   Do you want to CLEAR ALL content from this section? (y/n): ", end="")
+            if not dry_run:
+                return clear_section_content(section_id, dry_run)
+            else:
+                return clear_section_content(section_id, True)
+
     # Try exact match first
     if search_text in content:
         # Find context around the match
@@ -420,7 +482,7 @@ def remove_content_from_file(search_text: str, dry_run: bool = False) -> bool:
         end = min(len(content), pos + len(search_text) + 100)
         context = content[start:end]
 
-        print(f"\n🔍 Found match!")
+        print(f"\n🔍 Found exact match!")
         print(f"\n{'─' * 50}")
         print(f"...{context}...")
         print(f"{'─' * 50}")
@@ -450,12 +512,16 @@ def remove_content_from_file(search_text: str, dry_run: bool = False) -> bool:
         return True
     else:
         # Try fuzzy search - find similar content
-        print(f"\n❌ Exact match not found.")
-        print(f"\n🔍 Searching for similar content...")
+        print(f"\n❌ Exact match not found in HTML file.")
+        print(f"\n💡 Tips:")
+        print(f"   • To clear a whole section, just type the section name:")
+        print(f"     Example: ingress, docker, kubernetes")
+        print(f"   • To remove specific content, copy from the raw HTML file")
+        print(f"   • Or search first: learn --search \"keyword\"")
 
         # Search for parts of the text
         lines = search_text.split('\n')
-        for line in lines[:3]:  # Check first 3 lines
+        for line in lines[:3]:
             line = line.strip()
             if len(line) > 10 and line in content:
                 pos = content.find(line)
@@ -464,10 +530,8 @@ def remove_content_from_file(search_text: str, dry_run: bool = False) -> bool:
                 context = content[start:end]
                 print(f"\n📍 Found partial match:")
                 print(f"   ...{context[:100]}...")
-                print(f"\n💡 Try pasting just this specific text to remove it.")
                 return False
 
-        print(f"   No matches found. Make sure the text exists in DevOps_Notes.html")
         return False
 
 
