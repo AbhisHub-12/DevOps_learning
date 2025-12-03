@@ -56,13 +56,17 @@ select_section() {
         ((count++))
     done
 
+    echo -e "  ${YELLOW}$count)${NC} ➕ Create NEW section"
     echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
     echo ""
     echo -e "${YELLOW}Enter number or type section name directly:${NC}"
     read -r selection
 
     if [[ "$selection" =~ ^[0-9]+$ ]]; then
-        if [ "$selection" -ge 1 ] && [ "$selection" -le ${#SECTIONS[@]} ]; then
+        if [ "$selection" -eq "$count" ]; then
+            echo -e "${YELLOW}Enter new section name (e.g., terraform, aws, ansible):${NC}"
+            read -r SELECTED_SECTION
+        elif [ "$selection" -ge 1 ] && [ "$selection" -lt "$count" ]; then
             SELECTED_SECTION="${SECTIONS[$((selection-1))]}"
         fi
     else
