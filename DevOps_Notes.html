@@ -607,7 +607,101 @@ systemctl daemon-reload
 systemctl start myapp
 systemctl enable myapp
                 </div>
-            </section>
+            
+                <!-- Added on 2026-01-05 16:42 -->
+<h3>Changing File Permissions</h3>
+<p>The <code>chmod</code> command enables you to change the permissions on a file. You must be superuser or the owner of a file or directory to change its permissions.</p>
+
+<p>You can use the <code>chmod</code> command to set permissions in either of two modes:</p>
+<ul>
+    <li><strong>Absolute Mode</strong> - Use numbers to represent file permissions (the method most commonly used to set permissions). When you change permissions by using the absolute mode, represent permissions for each triplet by an octal mode number.</li>
+    <li><strong>Symbolic Mode</strong> - Use combinations of letters and symbols to add or remove permissions.</li>
+</ul>
+
+<h3>Setting File Permissions in Absolute Mode</h3>
+<table class="command-table">
+    <tr><th>Octal Value</th><th>File Permissions Set</th><th>Permissions Description</th></tr>
+    <tr><td>0</td><td>---</td><td>No permissions</td></tr>
+    <tr><td>1</td><td>--x</td><td>Execute permission only</td></tr>
+    <tr><td>2</td><td>-w-</td><td>Write permission only</td></tr>
+    <tr><td>3</td><td>-wx</td><td>Write and execute permissions</td></tr>
+    <tr><td>4</td><td>r--</td><td>Read permission only</td></tr>
+    <tr><td>5</td><td>r-x</td><td>Read and execute permissions</td></tr>
+    <tr><td>6</td><td>rw-</td><td>Read and write permissions</td></tr>
+    <tr><td>7</td><td>rwx</td><td>Read, write, and execute permissions</td></tr>
+</table>
+
+<h3>Setting File Permissions in Symbolic Mode</h3>
+<table class="command-table">
+    <tr><th>Symbol</th><th>Function</th><th>Description</th></tr>
+    <tr><td>u</td><td>Who</td><td>User (owner)</td></tr>
+    <tr><td>g</td><td>Who</td><td>Group</td></tr>
+    <tr><td>o</td><td>Who</td><td>Others</td></tr>
+    <tr><td>a</td><td>Who</td><td>All</td></tr>
+    <tr><td>=</td><td>Operation</td><td>Assign</td></tr>
+    <tr><td>+</td><td>Operation</td><td>Add</td></tr>
+    <tr><td>-</td><td>Operation</td><td>Remove</td></tr>
+    <tr><td>r</td><td>Permission</td><td>Read</td></tr>
+    <tr><td>w</td><td>Permission</td><td>Write</td></tr>
+    <tr><td>x</td><td>Permission</td><td>Execute</td></tr>
+    <tr><td>l</td><td>Permission</td><td>Mandatory locking, setgid bit is on, group execution bit is off</td></tr>
+    <tr><td>s</td><td>Permission</td><td>setuid or setgid bit is on</td></tr>
+    <tr><td>S</td><td>Permission</td><td>suid bit is on, user execution bit is off</td></tr>
+    <tr><td>t</td><td>Permission</td><td>Sticky bit is on, execution bit for others is on</td></tr>
+    <tr><td>T</td><td>Permission</td><td>Sticky bit is on, execution bit for others is off</td></tr>
+</table>
+
+<h3>How to Change Permissions in Absolute Mode</h3>
+<p>If you are not the owner of the file or directory, become superuser.</p>
+<p>Only the current owner or superuser can use the <code>chmod</code> command to change file permissions on a file or directory.</p>
+<p>Change permissions in absolute mode by using the <code>chmod</code> command:</p>
+<div class="command-box">
+# Change file permissions using absolute mode
+chmod nnn filename
+</div>
+<p><code>nnn</code> specifies the octal values that change permissions on the file or directory. See the table above for the list of valid octal values.</p>
+<p><code>filename</code> is the file or directory.</p>
+<p>Verify the permissions of the file have changed:</p>
+<div class="command-box">
+# Verify file permissions
+ls -l filename
+</div>
+
+<h3>Example--Changing Permissions in Absolute Mode</h3>
+<div class="command-box">
+# Set rwxr-xr-x permissions on myfile
+chmod 755 myfile
+ls -l myfile
+</div>
+
+<h3>How to Change Permissions in Symbolic Mode</h3>
+<p>If you are not the owner of the file or directory, become superuser.</p>
+<p>Only the current owner or superuser can use the <code>chmod</code> command to change file permissions on a file or directory.</p>
+<p>Change permissions in symbolic mode by using the <code>chmod</code> command:</p>
+<div class="command-box">
+# Change file permissions using symbolic mode
+chmod who operator permission filename
+</div>
+<p><code>who</code> specifies whose permissions are changed, <code>operator</code> specifies the operation to perform, and <code>permission</code> specifies what permissions are changed. See the table above for the list of valid symbols.</p>
+<p><code>filename</code> is the file or directory.</p>
+<p>Verify the permissions of the file have changed:</p>
+<div class="command-box">
+# Verify file permissions
+ls -l filename
+</div>
+
+<h3>Examples--Changing Permissions in Symbolic Mode</h3>
+<div class="command-box">
+# Take away read permission from others
+chmod o-r filea
+# Add read and execute permissions for user, group, and others
+chmod a+rx fileb
+# Assign read, write, and execute permissions to group
+chmod g=rwx filec
+</div>
+
+
+                </section>
             
             <!-- Docker Section -->
             <section id="docker" class="section">
