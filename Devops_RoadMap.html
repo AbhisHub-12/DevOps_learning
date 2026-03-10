@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kubernetes Learning Roadmap</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #020b18;
+    --deep: #040f1f;
+    --surface: rgba(6, 20, 40, 0.85);
+    --border: rgba(0, 200, 255, 0.15);
+    --glow: #00c8ff;
+    --glow2: #0066ff;
+    --yellow: #ffe600;
+    --white: #e8f4ff;
+    --muted: rgba(200, 220, 255, 0.5);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    font-family: 'Inter', sans-serif;
+    color: var(--white);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Animated underwater background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 40% at 50% 0%, rgba(0, 80, 180, 0.3) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 60% at 20% 80%, rgba(0, 30, 100, 0.4) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 50% at 80% 60%, rgba(0, 60, 150, 0.25) 0%, transparent 50%),
+      linear-gradient(180deg, #010d1a 0%, #020f22 30%, #011628 60%, #020c1a 100%);
+    z-index: -2;
+    pointer-events: none;
+  }
+
+  /* Particle grid */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 15%, rgba(0,200,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 30% 45%, rgba(0,200,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 55% 20%, rgba(0,200,255,0.25) 0%, transparent 100%),
+      radial-gradient(1px 1px at 75% 70%, rgba(0,200,255,0.15) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 35%, rgba(0,200,255,0.3) 0%, transparent 100%),
+      radial-gradient(2px 2px at 20% 80%, rgba(0,150,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 65% 90%, rgba(0,200,255,0.2) 0%, transparent 100%);
+    z-index: -1;
+    pointer-events: none;
+    animation: shimmer 8s ease-in-out infinite alternate;
+  }
+
+  @keyframes shimmer {
+    from { opacity: 0.5; }
+    to { opacity: 1; }
+  }
+
+  /* Header */
+  header {
+    text-align: center;
+    padding: 48px 24px 32px;
+    position: relative;
+  }
+
+  header::after {
+    content: '';
+    display: block;
+    width: 200px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--glow), transparent);
+    margin: 24px auto 0;
+    animation: pulse-line 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse-line {
+    0%, 100% { opacity: 0.4; width: 200px; }
+    50% { opacity: 1; width: 400px; }
+  }
+
+  .header-badge {
+    display: inline-block;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--glow);
+    background: rgba(0, 200, 255, 0.08);
+    border: 1px solid rgba(0, 200, 255, 0.3);
+    padding: 6px 20px;
+    border-radius: 2px;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(28px, 5vw, 56px);
+    font-weight: 900;
+    letter-spacing: 2px;
+    line-height: 1.1;
+    color: #fff;
+    text-shadow: 0 0 40px rgba(0, 200, 255, 0.4), 0 0 80px rgba(0, 100, 255, 0.2);
+  }
+
+  h1 span {
+    color: var(--glow);
+    text-shadow: 0 0 20px var(--glow), 0 0 60px rgba(0,200,255,0.5);
+  }
+
+  .subtitle {
+    font-size: 14px;
+    color: var(--muted);
+    margin-top: 12px;
+    letter-spacing: 1px;
+  }
+
+  /* Main container */
+  .roadmap {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+    position: relative;
+  }
+
+  /* Vertical spine */
+  .roadmap::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg,
+      rgba(0,200,255,0.8) 0%,
+      rgba(0,100,255,0.6) 30%,
+      rgba(0,50,200,0.5) 60%,
+      rgba(0,30,150,0.4) 80%,
+      rgba(0,20,100,0.3) 100%);
+    transform: translateX(-50%);
+    z-index: 0;
+  }
+
+  /* Stage card */
+  .stage {
+    position: relative;
+    margin-bottom: 20px;
+    z-index: 1;
+  }
+
+  .stage-inner {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 28px;
+    backdrop-filter: blur(20px);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stage-inner::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--glow), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .stage:hover .stage-inner {
+    border-color: rgba(0, 200, 255, 0.4);
+    box-shadow: 0 0 40px rgba(0, 200, 255, 0.08), inset 0 0 30px rgba(0, 100, 255, 0.04);
+    transform: translateY(-2px);
+  }
+
+  .stage:hover .stage-inner::before { opacity: 1; }
+
+  /* Stage header row */
+  .stage-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 18px;
+  }
+
+  .stage-num {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--glow);
+    text-shadow: 0 0 20px var(--glow);
+    min-width: 44px;
+    line-height: 1;
+  }
+
+  .stage-meta {
+    flex: 1;
+  }
+
+  .stage-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--white);
+    text-transform: uppercase;
+  }
+
+  .stage-depth {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 3px;
+    font-family: 'Share Tech Mono', monospace;
+  }
+
+  /* Milestone badge */
+  .milestone {
+    display: inline-block;
+    background: linear-gradient(135deg, rgba(255,230,0,0.15), rgba(255,180,0,0.08));
+    border: 1px solid rgba(255, 230, 0, 0.4);
+    color: var(--yellow);
+    font-size: 10px;
+    font-family: 'Share Tech Mono', monospace;
+    letter-spacing: 1.5px;
+    padding: 5px 14px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    box-shadow: 0 0 12px rgba(255, 230, 0, 0.1);
+  }
+
+  /* Topics grid */
+  .topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .topic-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 16px;
+    background: rgba(0, 120, 255, 0.08);
+    border: 1px solid rgba(0, 180, 255, 0.2);
+    border-radius: 6px;
+    color: var(--white);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .topic-link::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(0,200,255,0.1), transparent);
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+
+  .topic-link:hover {
+    border-color: var(--glow);
+    color: #fff;
+    box-shadow: 0 0 16px rgba(0, 200, 255, 0.2), inset 0 0 12px rgba(0, 200, 255, 0.05);
+    transform: translateY(-2px);
+  }
+
+  .topic-link:hover::before { opacity: 1; }
+
+  .topic-icon {
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  .topic-link .arrow {
+    font-size: 10px;
+    color: var(--glow);
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: all 0.2s;
+    margin-left: 2px;
+  }
+
+  .topic-link:hover .arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* Connector dot */
+  .connector {
+    width: 14px;
+    height: 14px;
+    background: var(--bg);
+    border: 2px solid var(--glow);
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -18px;
+    box-shadow: 0 0 10px var(--glow);
+    z-index: 2;
+  }
+
+  /* Water line effect for stage 1 */
+  .waterline {
+    text-align: center;
+    padding: 12px 0;
+    margin: 8px 0;
+    position: relative;
+  }
+
+  .waterline-inner {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    background: rgba(0,150,255,0.06);
+    border: 1px solid rgba(0,200,255,0.2);
+    border-radius: 4px;
+    padding: 8px 20px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: rgba(0,200,255,0.7);
+    letter-spacing: 2px;
+  }
+
+  .waterline-inner::before,
+  .waterline-inner::after {
+    content: '〜〜〜';
+    opacity: 0.5;
+    letter-spacing: 0;
+  }
+
+  /* Depth markers */
+  .depth-marker {
+    position: absolute;
+    right: -70px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: rgba(0, 200, 255, 0.3);
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 24px;
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'Share Tech Mono', monospace;
+    letter-spacing: 1px;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .stage-inner { padding: 18px 16px; }
+    .stage-num { font-size: 24px; }
+    .milestone { display: none; }
+    .depth-marker { display: none; }
+    .roadmap::before { left: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-badge">🚢 DevOps Learning Series</div>
+  <h1>Kubernetes <span>Deep Dive</span><br>Roadmap</h1>
+  <p class="subtitle">Click any topic → best docs, guides & notes open instantly</p>
+</header>
+
+<main class="roadmap">
+
+  <!-- STAGE 1 -->
+  <div class="stage">
+    <div class="stage-inner">
+      <div class="stage-header">
+        <div class="stage-num">1</div>
+        <div class="stage-meta">
+          <div class="stage-title">Core Foundations</div>
+          <div class="stage-depth">▲ Surface Level · Start Here</div>
+        </div>
+        <span class="milestone">🐳 Pre-requisites</span>
+      </div>
+      <div class="topics">
+        <a class="topic-link" href="https://docs.docker.com/get-started/" target="_blank">
+          <span class="topic-icon">🐳</span> Docker<span class="arrow">↗</span>
+        </a>
+        <a class="topic-link" href="https://kubernetes.io/docs/concepts/architecture/" target="_blank">
+          <span class="topic-icon">🏛️</span> K8s Architecture<span class="arrow">↗</span>
+        </a>
+        <a class="topic-link" href="https://kubernetes.io/docs/concepts/overview/working-with-objects/kubernetes-objects/" target="_blank">
+          <span class="topic-icon">📄</span> Read/Write YAML<span class="arrow">↗</span>
+        </a>
+        <a class="topic-link" href="https://kubernetes.io/docs/reference/command-line-tools-reference/kube-apiserver/" target="_blank">
+          <span class="topic-icon">🔌</span> API Server<span class="arrow">↗</span>
+        </a>
+        <a class="topic-link" href="https://kubernetes.io/docs/concepts/architecture/controller/" target="_blank">
+          <span class="topic-icon">🔄</span> Controller<span class="arrow">↗</span>
+        </a>
+        <a class="topic-link" href="https://kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/" target="_blank">
+          <span class="topic-icon">📅</span> Scheduler<span class="arrow">↗</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="waterline">
+    <div class="waterline-inner">BEGINNER ZONE · SURFACE</div>
+  </div>
+
+  <!-- STAGE 2 -->
+  <div class="stage">
+    <div class="stage-inner">
+      <div class="stage-header">
+        <div class="stage-num">2</div>
+        <div class="stage-meta">
+          <div class="stage-title">Core Objects</div>
+          <div class="stage-depth">↓ Depth 1 · Workloads & Config</div>
+        </div>
+        <span class="milestone">📘 K8s Beginner Course</span>
+      </div>
+      <div class="topics">
+        <a class="topic-link" href="https://kubernetes.io/docs/concepts/workloads/pods/" target="_blank">
+          <span class="topic-icon">🫛</span> Pods<span class="arrow">↗</span>
+        </a>
+        <a class="topic-link" href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/" target="_blank">
+          <span class="topic-icon">🚀</span> Deployments<span class="arrow">↗</span>
+        </a>
+        <a class="topic-link" href="https://kubernetes.io/docs/concepts/services-networking/service/" target="_blank">
+          <span class="topic-icon">🌐</span> Services<span class="arrow">↗</span>
+        </a>
+        <a class="topic-link" href="https://kubernetes.io/docs/concepts/configuration/configmap/" target="_blank">
+          <span class="topic-icon">🗂️</span> Config Maps<span class="arrow">↗</span>
+        </a>
+        <a class="topic-link" href="https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/" target="_blank">
+          <span class="topic-icon">📦</span> Namespaces<span class="arrow">↗</span>
+        </a>
+        <a class="topic-link" href="https://kubernetes.io/docs/reference/access-authn-authz/rbac/" target="_blank">
+          <span class="topic-icon">🔑</span> Basic RBAC<span class="arrow">↗</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- STAGE 3 -->
+  <div class="stage">
+    <div class="stage-inner">
+      <div class="stage-header">
+        <div class="stage-num">3</div>
+        <div class="stage-meta">
+          <div class="stage-title">Debugging & Troubleshooting</div>
+          <div class="stage-depth">↓ Depth 2 · Real-world Ops</div>
+        </div>
+        <span class="milestone">🏗️ 3-Tier Project</span>
+      </div>
+      <div class="topics">
+        <a class="topic-link" href="https://kubernetes.io/docs/tasks/debug/debug-application/debug-pods/" target="_blank">
+          <span class="topic-icon">🔁</span> CrashLoopBackOff<span class="arrow">↗</span>
+        </a>
+        <a class="topic-link" href="https://kubernetes.io/docs/tasks/debug/debug-application/" target="_blank">
+          <span class="topic-icon">🐛</span> Error Debugging<span class="arrow">↗</span>
+        </a>
+        <a class="topic-link" href="https://kubernetes.io/docs/concepts/cluster-administration/logging/" target="_blank">
+          <span class="topic-icon">📋</span> Check Logs/Events<span class="arrow">↗</span>
+        </a>
+        <a class="topic-link" href="https://kubernetes.io/docs/tasks/manage-kubernetes-objects/update-api-object-kubectl-patch/" target="_blank">
+          <span class="topic-icon">🔧</span> Patch YAML Configs<span class="arrow">↗</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- STAGE 4 -->
+  <div class="stage">
+    <div class="stage-inner">
+      <div class="stage-header">
+        <div class="stage-num">4</div>
+        <div class="stage-meta">
+          <div class="stage-title">Networking & Scaling</div>
+          <div class="stage-depth">↓ Depth 3 · Production Patterns</div>
+        </div>
+        <span class="milestone">🏅 CKAD/CKA Certification</span>
+      </div>
+      <div class="topics">
+        <a class="topic-link" href="https://kubernetes.io/docs/concepts/services-networking/ingress/" target="_blank">
+          <span class="topic-icon">🌉</span> Ingress vs Services<span class="arrow">↗</span>
+        </a>
+        <a class="topic-link" href="https://kubernetes.io/docs/tutorials/kubernetes-basics/update/update-intro/" target="_blank">
+          <span class="topic-icon">🔄</span> Rolling Updates<span class="arrow">↗</span>
+        </a>
+        <a class="topic-link" href="https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/" target="_blank">
+          <span class="topic-icon">📈</span> Autoscaling<span class="arrow">↗</span>
+        </a>
+        <a class="topic-link" href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy" target="_blank">
+          <span class="topic-icon">🎯</span> Deployment Strats.<span class="arrow">↗</span>
+        </a>
+        <a class="topic-link" href="https://devopscube.com/kubernetes-monitoring-tools/" target="_blank">
+          <span class="topic-icon">📊</span> Monitoring<span class="arrow">↗</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- STAGE 5 -->
+  <div class="stage">
+    <div class="stage-inner">
+      <div class="stage-header">
+        <div class="stage-num">5</div>
+        <div class="stage-meta">
+          <div class="stage-title">Packaging & Storage</div>
+          <div class="stage-depth">↓ Depth 4 · Helm & Persistence</div>
+        </div>
+      </div>
+      <div class="topics">
+        <a class="topic-link" href="https://helm.sh/docs/intro/quickstart/" target="_blank">
+          <span class="topic-icon">⛵</span> Helm Charts<span class="arrow">↗</span>
+        </a>
+        <a class="topic-link" href="https://helm.sh/docs/chart_template_guide/" target="_blank">
+          <span class="topic-icon">📐</span> Templating<span class="arrow">↗</span>
+        </a>
+        <a class="topic-link" href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/" target="_blank">
+          <span class="topic-icon">💾</span> Persistent Volumes<span class="arrow">↗</span>
+        </a>
+        <a class="topic-link" href="https://kubernetes.io/docs/reference/access-authn-authz/rbac/" target="_blank">
+          <span class="topic-icon">🛡️</span> RBAC Design<span class="arrow">↗</span>
+        </a>
+        <a class="topic-link" href="https://kubernetes.io/docs/concepts/storage/storage-classes/" target="_blank">
+          <span class="topic-icon">🗄️</span> Storage Classes<span class="arrow">↗</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- STAGE 6 -->
+  <div class="stage">
+    <div class="stage-inner">
+      <div class="stage-header">
+        <div class="stage-num">6</div>
+        <div class="stage-meta">
+          <div class="stage-title">CI/CD & Observability</div>
+          <div class="stage-depth">↓ Depth 5 · GitOps & Telemetry</div>
+        </div>
+        <span class="milestone">🔄 E2E K8s w/ GitOps</span>
+      </div>
+      <div class="topics">
+        <a class="topic-link" href="https://www.jenkins.io/doc/book/using/using-credentials/" target="_blank">
+          <span class="topic-icon">⚙️</span> CI/CD<span class="arrow">↗</span>
+        </a>
+        <a class="topic-link" href="https://argo-cd.readthedocs.io/en/stable/getting_started/" target="_blank">
+          <span class="topic-icon">🌿</span> GitOps (ArgoCD)<span class="arrow">↗</span>
+        </a>
+        <a class="topic-link" href="https://prometheus.io/docs/introduction/overview/" target="_blank">
+          <span class="topic-icon">📡</span> Metrics<span class="arrow">↗</span>
+        </a>
+        <a class="topic-link" href="https://grafana.com/docs/loki/latest/" target="_blank">
+          <span class="topic-icon">📝</span> Logs (Loki)<span class="arrow">↗</span>
+        </a>
+        <a class="topic-link" href="https://opentelemetry.io/docs/getting-started/" target="_blank">
+          <span class="topic-icon">🔭</span> Traces (OTel)<span class="arrow">↗</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- STAGE 7 -->
+  <div class="stage">
+    <div class="stage-inner">
+      <div class="stage-header">
+        <div class="stage-num">7</div>
+        <div class="stage-meta">
+          <div class="stage-title">Advanced & Expert</div>
+          <div class="stage-depth">↓ Depth 6 · Operators, Mesh & IaC</div>
+        </div>
+        <span class="milestone">🧠 Expert Level</span>
+      </div>
+      <div class="topics">
+        <a class="topic-link" href="https://kubernetes.io/docs/concepts/extend-kubernetes/operator/" target="_blank">
+          <span class="topic-icon">🤖</span> Operators<span class="arrow">↗</span>
+        </a>
+        <a class="topic-link" href="https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/" target="_blank">
+          <span class="topic-icon">🧩</span> CRDs<span class="arrow">↗</span>
+        </a>
+        <a class="topic-link" href="https://istio.io/latest/docs/setup/getting-started/" target="_blank">
+          <span class="topic-icon">🕸️</span> Service Mesh (Istio)<span class="arrow">↗</span>
+        </a>
+        <a class="topic-link" href="https://kubernetes.io/docs/tasks/manage-gpus/scheduling-gpus/" target="_blank">
+          <span class="topic-icon">⚡</span> GPU Workloads<span class="arrow">↗</span>
+        </a>
+        <a class="topic-link" href="https://developer.hashicorp.com/terraform/tutorials/kubernetes" target="_blank">
+          <span class="topic-icon">🏗️</span> Terraform w/ K8s<span class="arrow">↗</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- BONUS ROW -->
+  <div style="margin-top:32px; background: rgba(0,30,60,0.6); border:1px solid rgba(0,200,255,0.15); border-radius:12px; padding:20px 28px;">
+    <div style="font-family:'Orbitron',sans-serif; font-size:12px; letter-spacing:2px; color:var(--glow); margin-bottom:14px; text-transform:uppercase;">⚓ Essential Reference Links</div>
+    <div class="topics">
+      <a class="topic-link" href="https://kubernetes.io/docs/home/" target="_blank">
+        <span class="topic-icon">📗</span> Official K8s Docs<span class="arrow">↗</span>
+      </a>
+      <a class="topic-link" href="https://github.com/techiescamp/kubernetes-learning-path" target="_blank">
+        <span class="topic-icon">🗺️</span> K8s Learning Path (GitHub)<span class="arrow">↗</span>
+      </a>
+      <a class="topic-link" href="https://devopscube.com/learn-kubernetes-complete-roadmap/" target="_blank">
+        <span class="topic-icon">🧭</span> DevOpsCube Roadmap<span class="arrow">↗</span>
+      </a>
+      <a class="topic-link" href="https://killercoda.com/playgrounds/scenario/kubernetes" target="_blank">
+        <span class="topic-icon">🎮</span> KillerCoda Labs<span class="arrow">↗</span>
+      </a>
+      <a class="topic-link" href="https://kodekloud.com/blog/kubernetes-tutorial-for-beginners-2025/" target="_blank">
+        <span class="topic-icon">🎓</span> KodeKloud Guide<span class="arrow">↗</span>
+      </a>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  ⚓ KUBERNETES ROADMAP · STAGE 1–7 · CLICK ANY TOPIC TO OPEN DOCS
+</footer>
+
+</body>
+</html>
